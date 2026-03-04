@@ -15,7 +15,7 @@ module.exports = {
     description: 'Bienvenue ! Tu vas maintenant apprendre à utiliser nos **outils** et comprendre le **processus d\'appariement**.\n\n**Ce que tu vas accomplir :**\n• Découvrir Discord et TutorBird\n• Comprendre le processus d\'appariement\n• Apprendre à postuler aux offres\n• Débloquer le rôle **Tuteur - Niveau 1**',
     fields: [
       { name: '⏱️ Durée', value: '10-15 minutes' },
-      { name: '🎯 Objectif', value: 'Obtenir le rôle **Tuteur N1** et accéder à #appliquer-à-un-contrat' },
+      { name: '🎯 Objectif', value: 'Obtenir le rôle **Tuteur N1** et accéder à #offres' },
     ],
     buttons: [
       { id: 'btn_N1_start', label: '🚀 Commencer', style: 'Primary' },
@@ -51,7 +51,7 @@ module.exports = {
         q: 'Où postules-tu aux offres d\'élèves ?',
         options: [
           'Sur le site web Centre Reed',
-          'Dans le canal #appliquer-à-un-contrat sur Discord',
+          'Dans le canal #offres sur Discord',
           'Par courriel à la direction',
           'Sur TutorBird directement',
         ],
@@ -106,7 +106,7 @@ module.exports = {
     fields: [
       { name: '✅ Ce que tu as appris', value: '• Navigation Discord et processus d\'appariement\n• Utilisation de TutorBird\n• Comment postuler aux offres' },
       { name: '🎁 Récompense', value: 'Tu viens de recevoir le rôle **Tuteur - Niveau 1** !' },
-      { name: '🔓 Accès débloqué', value: 'Tu peux maintenant voir et postuler aux offres dans **#appliquer-à-un-contrat**' },
+      { name: '🔓 Accès débloqué', value: 'Tu peux maintenant voir et postuler aux offres dans **#offres**' },
       { name: '➡️ Prochaine étape', value: 'Une fois que tu seras **accepté à une offre**, tu recevras le rôle **Tuteur - Apparié (N1A)**.\n\nTu pourras alors continuer ta formation avec `/finish_onboarding` pour apprendre à animer tes séances !' },
     ],
     buttons: [
@@ -129,7 +129,7 @@ module.exports = {
     id: 'N1A-01',
     level: '1A',
     title: '🎉 Félicitations pour ton appariement !',
-    description: 'Bravo ! Tu as été accepté à une offre et tu es maintenant **Tuteur - Apparié (N1A)**.\n\nCette formation te préparera à donner tes premières séances avec ton élève.\n\n**Ce que tu vas apprendre :**\n• Comment préparer ta **séance découverte** (première séance)\n• Comment animer tes **séances récurrentes**',
+    description: 'Bravo ! Tu as été accepté à une offre et tu es maintenant **Tuteur - Apparié (N1A)**.\n\nCette formation te préparera à donner tes premières séances avec ton élève. Le processus d\'une séance découverte et une séance récurrente n\'est pas le même.\n\n**Ce que tu vas apprendre :**\n• Comment préparer ta **séance découverte** (première séance)\n• Comment animer tes **séances récurrentes**',
     fields: [
       { name: '⏱️ Durée', value: '15-20 minutes' },
       { name: '🎯 Objectif', value: 'Maîtriser le déroulement des séances avant de rencontrer ton élève' },
