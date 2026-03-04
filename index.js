@@ -16,15 +16,55 @@ const client = new Client({
 // Stockage temporaire pour les quiz en cours
 const activeQuizzes = new Map();
 
-client.once('clientReady', () => {
+client.once('clientReady', async () => {
   console.log(`✅ Logged in as ${client.user.tag}`);
   console.log('🟢 Bot is online and ready!');
   console.log(`📊 Tracking ${progressManager.getAllUsers().length} users' progress`);
+  
+  // Register slash commands on startup
+  try {
+    const { REST, Routes } = require('discord.js');
+    const { SlashCommandBuilder } = require('discord.js');
+    const { shiftCommands } = require('./shiftModule');
+    
+    const commands = [
+      new SlashCommandBuilder()
+        .setName('start_onboarding')
+        .setDescription('Démarrer la Formation Niveau 1 (Outils & Appariement)')
+        .toJSON(),
+      new SlashCommandBuilder()
+        .setName('finish_onboarding')
+        .setDescription('Formation Séances (Découverte & Récurrentes) - Requiert rôle Apparié')
+        .toJSON(),
+      new SlashCommandBuilder()
+        .setName('complete_training')
+        .setDescription('Formation Niveau 2 (Méthode Centre Reed) - Requiert rôle Apparié')
+        .toJSON(),
+      ...shiftCommands,
+    ];
+    
+    const rest = new REST({ version: '10' }).setToken(config.token);
+    
+    await rest.put(
+      Routes.applicationGuildCommands(config.clientId, config.guildId),
+      { body: commands }
+    );
+    
+    console.log('✅ Slash commands registered successfully!');
+  } catch (error) {
+    console.error('❌ Error registering commands:', error);
+  }
 });
 
 // Handle slash commands
 client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
+
+  // Ignore expired interactions
+  if (Date.now() - interaction.createdTimestamp > 2900) {
+    console.warn(`⚠️ Ignoring expired interaction from ${interaction.user.tag}`);
+    return;
+  }
 
   // Handle shift commands first
   if (await handleShiftChatCommand(interaction)) return;
@@ -66,10 +106,14 @@ client.on('interactionCreate', async (interaction) => {
         .setStyle(ButtonStyle.Primary)
     );
 
-    await interaction.reply({
-      embeds: [embed],
-      components: [row],
-    });
+    try {
+      await interaction.reply({
+        embeds: [embed],
+        components: [row],
+      });
+    } catch (error) {
+      console.error('❌ Error replying to /start_onboarding:', error.message);
+    }
   }
 
   // Commande /finish_onboarding - Formation N1A (Séances)
