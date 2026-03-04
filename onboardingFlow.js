@@ -2,12 +2,21 @@
 const config = require('./config');
 
 module.exports = {
-  // Niveau 1 - Processus & Bidding
+  // ============================================
+  // NIVEAU 1 - Outils & Appariement
+  // Commande: /start_onboarding
+  // Résultat: Rôle Tuteur N1 → Accès #appliquer-à-un-contrat
+  // ============================================
+
   'N1-01': {
     id: 'N1-01',
     level: 1,
     title: '🎯 Bienvenue au Centre Reed - Formation Niveau 1',
-    description: 'Bienvenue ! Tu vas maintenant apprendre comment **postuler aux offres d\'élèves** et débloquer l\'accès au canal **#appliquer-à-un-contrat**.\n\n**Ce que tu vas accomplir :**\n• Comprendre le processus d\'appariement\n• Apprendre à postuler (bidding)\n• Réussir un test pratique\n• Débloquer le rôle **Tuteur - Niveau 1**',
+    description: 'Bienvenue ! Tu vas maintenant apprendre à utiliser nos **outils** et comprendre le **processus d\'appariement**.\n\n**Ce que tu vas accomplir :**\n• Découvrir Discord et TutorBird\n• Comprendre le processus d\'appariement\n• Apprendre à postuler aux offres\n• Débloquer le rôle **Tuteur - Niveau 1**',
+    fields: [
+      { name: '⏱️ Durée', value: '10-15 minutes' },
+      { name: '🎯 Objectif', value: 'Obtenir le rôle **Tuteur N1** et accéder à #appliquer-à-un-contrat' },
+    ],
     buttons: [
       { id: 'btn_N1_start', label: '🚀 Commencer', style: 'Primary' },
     ],
@@ -17,12 +26,13 @@ module.exports = {
   'N1-02': {
     id: 'N1-02',
     level: 1,
-    title: 'Vidéo 1 — Processus d\'appariement & postulation (5–10 min)',
-    description: 'Découvre comment les **offres d\'élèves** sont publiées sur Discord et comment **postuler (bidding)**.',
+    title: 'Vidéo 1 — Outils (Discord & TutorBird)',
+    description: 'Découvre les deux outils principaux que tu utiliseras en tant que tuteur au Centre Reed.',
     fields: [
       { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/ham62aTgKw0)' },
-      { name: 'Durée', value: '5–10 minutes' },
-      { name: 'À retenir', value: 'Chaque offre reste **ouverte 24h** ; tu **postules en cliquant sur le bouton "Postuler"** sous l\'offre.' },
+      { name: '📱 Discord', value: 'Processus d\'appariement, comment postuler aux offres (bidding), navigation dans les canaux' },
+      { name: '💻 TutorBird', value: 'Email de confirmation après acceptation, Dashboard, Calendrier, Ressources, Paies' },
+      { name: '⏱️ Durée', value: '5-10 minutes' },
     ],
     buttons: [
       { id: 'btn_N1_video_done', label: '🎥 Vidéo complétée', style: 'Primary' },
@@ -34,37 +44,52 @@ module.exports = {
     id: 'N1-03',
     level: 1,
     type: 'quiz',
-    title: 'Quiz — Appariement & Bidding',
-    description: 'Teste tes connaissances sur le processus d\'appariement.',
+    title: 'Quiz — Outils (Discord & TutorBird)',
+    description: 'Teste tes connaissances sur les outils que tu vas utiliser.',
     questions: [
       {
-        q: "Combien de temps une offre d'appariement reste-t-elle ouverte ?",
-        options: ['12 heures', '24 heures', '48 heures', "Jusqu'à ce qu'un tuteur se propose"],
-        correctIndex: 1,
-      },
-      {
-        q: "Que doit contenir la fiche d'offre ?",
+        q: 'Où postules-tu aux offres d\'élèves ?',
         options: [
-          'Nom du parent et téléphone',
-          'Matière, niveau, heures et disponibilités',
-          "Nombre d'élèves par classe",
-          "Salaire d'autres tuteurs",
+          'Sur le site web Centre Reed',
+          'Dans le canal #appliquer-à-un-contrat sur Discord',
+          'Par courriel à la direction',
+          'Sur TutorBird directement',
         ],
         correctIndex: 1,
       },
       {
-        q: 'Comment postuler (bidder) ?',
+        q: 'Comment postuler à une offre ?',
         options: [
-          'Envoyer un courriel à la direction',
+          'Envoyer un courriel',
           'Cliquer sur le bouton "Postuler" sous l\'offre',
-          'Répondre dans le thread Discord avec une courte présentation',
+          'Écrire un message dans le thread',
           'Remplir un formulaire externe',
         ],
         correctIndex: 1,
       },
+      {
+        q: 'À quoi sert TutorBird ?',
+        options: [
+          'Discuter avec les élèves',
+          'Gérer les séances, suivis et paies',
+          'Créer des devoirs auto-corrigés',
+          'Postuler aux offres',
+        ],
+        correctIndex: 1,
+      },
+      {
+        q: 'Quand reçois-tu l\'accès à TutorBird ?',
+        options: [
+          'Dès la fin de cette formation',
+          'Après avoir été accepté à une offre',
+          'Après 1 mois de tutorat',
+          'Il faut en faire la demande',
+        ],
+        correctIndex: 1,
+      },
     ],
-    passMessage: '✅ Parfait. Passons au test pratique (offre fictive).',
-    failMessage: '❌ Mauvaises réponses. Revois la vidéo et réessaie.',
+    passMessage: '✅ Parfait ! Tu es prêt pour la suite.',
+    failMessage: '❌ Revois la vidéo et réessaie.',
     onPass: {
       nextStep: 'N1-04',
     },
@@ -76,41 +101,214 @@ module.exports = {
   'N1-04': {
     id: 'N1-04',
     level: 1,
-    type: 'practice',
-    title: 'Test — Comprendre une offre (fictive)',
-    description: 'Voici une **offre fictive**. Lis attentivement les détails pour comprendre comment analyser une offre avant de postuler.',
+    title: '🎉 Formation Niveau 1 Complétée !',
+    description: 'Félicitations ! Tu as terminé la première étape de ta formation.',
     fields: [
-      {
-        name: 'Offre Exemple',
-        value: '📣 **Math Sec 2**\n\n📅 Date de début: 2025-11-12\n⏱️ Durée: 2h/semaine pendant 4 semaines\n🗓️ Disponibilités élève: Lun 18-19h, Jeu 17-18h\n📚 Matières: Mathématiques (fractions & équations)',
-      },
-      {
-        name: '💡 Comment postuler ?',
-        value: 'Quand tu verras une vraie offre dans **#appliquer-à-un-contrat**, tu devras :\n\n1️⃣ **Lire attentivement** les détails de l\'offre\n2️⃣ **Vérifier** que tu es disponible aux heures indiquées\n3️⃣ **Cliquer sur le bouton "Postuler"** sous l\'offre\n\n✅ C\'est aussi simple que ça ! Les admins verront ta candidature.',
-      },
+      { name: '✅ Ce que tu as appris', value: '• Navigation Discord et processus d\'appariement\n• Utilisation de TutorBird\n• Comment postuler aux offres' },
+      { name: '🎁 Récompense', value: 'Tu viens de recevoir le rôle **Tuteur - Niveau 1** !' },
+      { name: '🔓 Accès débloqué', value: 'Tu peux maintenant voir et postuler aux offres dans **#appliquer-à-un-contrat**' },
+      { name: '➡️ Prochaine étape', value: 'Une fois que tu seras **accepté à une offre**, tu recevras le rôle **Tuteur - Apparié (N1A)**.\n\nTu pourras alors continuer ta formation avec `/finish_onboarding` pour apprendre à animer tes séances !' },
     ],
-    footer: 'Clique ci-dessous pour confirmer que tu as compris le processus.',
     buttons: [
-      { id: 'btn_N1_practice_done', label: '✅ J\'ai compris le processus', style: 'Primary' },
+      { id: 'btn_N1_complete', label: '🎓 Terminer', style: 'Success' },
     ],
     onSuccess: {
       nextStep: null,
       addRoles: ['tuteurN1'],
-      message: '🎉 **Formation Niveau 1 complétée !**\n\nTu as maintenant le rôle **Tuteur - Niveau 1**.\n\n🔓 Tu peux maintenant voir et postuler aux offres dans le canal **#appliquer-à-un-contrat** !\n\n**Prochaine étape :** Une fois que tu seras accepté à une offre et que tu recevras le rôle **Tuteur - Apparié (N1A)**, tape `/finish_onboarding` pour faire la **Formation Niveau 2** et devenir tuteur actif ! 🎓',
+      message: '🎉 **Tu es maintenant Tuteur - Niveau 1 !**\n\n🔓 Accès débloqué : <#' + config.channels.contrats + '>\n\n**Prochaine étape :** Postule à une offre et attends d\'être accepté pour continuer ta formation ! 💙',
     },
   },
 
-  // Niveau 2 - TutorBird & Séances (Accessible seulement avec le rôle Tuteur - Apparié)
+  // ============================================
+  // NIVEAU 1A - Séances (Tuteurs Appariés)
+  // Commande: /finish_onboarding (requiert rôle N1A)
+  // Résultat: Garde le rôle N1A
+  // ============================================
+
+  'N1A-01': {
+    id: 'N1A-01',
+    level: '1A',
+    title: '🎉 Félicitations pour ton appariement !',
+    description: 'Bravo ! Tu as été accepté à une offre et tu es maintenant **Tuteur - Apparié (N1A)**.\n\nCette formation te préparera à donner tes premières séances avec ton élève.\n\n**Ce que tu vas apprendre :**\n• Comment préparer ta **séance découverte** (première séance)\n• Comment animer tes **séances récurrentes**',
+    fields: [
+      { name: '⏱️ Durée', value: '15-20 minutes' },
+      { name: '🎯 Objectif', value: 'Maîtriser le déroulement des séances avant de rencontrer ton élève' },
+    ],
+    buttons: [
+      { id: 'btn_N1A_start', label: '▶️ Commencer', style: 'Primary' },
+    ],
+    nextStep: 'N1A-02',
+  },
+
+  'N1A-02': {
+    id: 'N1A-02',
+    level: '1A',
+    title: 'Vidéo 1 — Séance Découverte (Première séance)',
+    description: 'Apprends à préparer et animer ta toute première séance avec ton élève.',
+    fields: [
+      { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
+      { name: '📂 Panier de l\'élève', value: 'Accès au Drive contenant les documents de l\'élève (notes, devoirs, etc.)' },
+      { name: '📋 Fiche de Levin', value: 'Outil d\'évaluation du style et des forces d\'apprentissage de l\'élève' },
+      { name: '🎯 Évaluation initiale', value: 'Identifier les besoins et le niveau actuel de l\'élève' },
+      { name: '🔗 Démarrer', value: 'Créer le lien avec l\'élève et établir un climat de confiance' },
+    ],
+    buttons: [
+      { id: 'btn_N1A_v1_done', label: '🎥 Vidéo 1 vue', style: 'Primary' },
+    ],
+    nextStep: 'N1A-03',
+  },
+
+  'N1A-03': {
+    id: 'N1A-03',
+    level: '1A',
+    type: 'quiz',
+    title: 'Quiz — Séance Découverte',
+    description: 'Vérifie ta compréhension de la préparation de la première séance.',
+    questions: [
+      {
+        q: 'Avant la première séance, tu dois consulter :',
+        options: [
+          'Uniquement l\'email de confirmation',
+          'Le panier de l\'élève et la fiche de Levin',
+          'Les notes de l\'ancien tuteur',
+          'Le bulletin de l\'école',
+        ],
+        correctIndex: 1,
+      },
+      {
+        q: 'La fiche de Levin sert à :',
+        options: [
+          'Calculer les notes de l\'élève',
+          'Évaluer le style et les forces d\'apprentissage',
+          'Planifier les vacances',
+          'Corriger les exercices',
+        ],
+        correctIndex: 1,
+      },
+      {
+        q: 'L\'objectif principal de la séance découverte est de :',
+        options: [
+          'Finir tous les devoirs en retard',
+          'Créer le lien et évaluer les besoins de l\'élève',
+          'Enseigner toute la matière manquée',
+          'Parler uniquement avec le parent',
+        ],
+        correctIndex: 1,
+      },
+    ],
+    passMessage: '✅ Excellent ! Passons aux séances récurrentes.',
+    failMessage: '❌ Revois la vidéo et réessaie.',
+    onPass: {
+      nextStep: 'N1A-04',
+    },
+    onFail: {
+      retryStep: 'N1A-02',
+    },
+  },
+
+  'N1A-04': {
+    id: 'N1A-04',
+    level: '1A',
+    title: 'Vidéo 2 — Séances Récurrentes',
+    description: 'Découvre comment structurer tes séances régulières après la séance découverte.',
+    fields: [
+      { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
+      { name: '✅ Présence', value: 'Confirmer la présence de l\'élève et noter dans TutorBird' },
+      { name: '🔄 Rappel', value: 'Revoir la séance précédente et faire le lien' },
+      { name: '📊 Mise à jour élève', value: 'Demander comment s\'est passée la semaine (école, devoirs, examens)' },
+      { name: '📚 Adapter', value: 'Alterner entre théorie et exercices selon les besoins' },
+      { name: '🎓 Teach-back', value: 'Faire expliquer les concepts par l\'élève pour valider la compréhension' },
+      { name: '💬 Récap + Feedback', value: 'Résumer la séance et noter le feedback dans TutorBird' },
+    ],
+    buttons: [
+      { id: 'btn_N1A_v2_done', label: '🎥 Vidéo 2 vue', style: 'Primary' },
+    ],
+    nextStep: 'N1A-05',
+  },
+
+  'N1A-05': {
+    id: 'N1A-05',
+    level: '1A',
+    type: 'quiz',
+    title: 'Quiz — Séances Récurrentes',
+    description: 'Valide ta compréhension du déroulement des séances.',
+    questions: [
+      {
+        q: 'Au début de chaque séance, tu dois :',
+        options: [
+          'Commencer directement les exercices',
+          'Confirmer la présence et faire un rappel de la séance précédente',
+          'Parler uniquement de la nouvelle matière',
+          'Donner un examen surprise',
+        ],
+        correctIndex: 1,
+      },
+      {
+        q: 'Le "teach-back" consiste à :',
+        options: [
+          'Répéter la matière plusieurs fois',
+          'Faire expliquer les concepts par l\'élève',
+          'Donner des devoirs supplémentaires',
+          'Regarder des vidéos YouTube',
+        ],
+        correctIndex: 1,
+      },
+      {
+        q: 'En fin de séance, tu dois :',
+        options: [
+          'Partir immédiatement',
+          'Faire un récap et noter le feedback dans TutorBird',
+          'Attendre que le parent arrive',
+          'Donner un examen',
+        ],
+        correctIndex: 1,
+      },
+    ],
+    passMessage: '🎉 **Formation Séances complétée !**',
+    failMessage: '❌ Revois la vidéo et réessaie.',
+    onPass: {
+      nextStep: 'N1A-06',
+    },
+    onFail: {
+      retryStep: 'N1A-04',
+    },
+  },
+
+  'N1A-06': {
+    id: 'N1A-06',
+    level: '1A',
+    title: '✅ Formation Séances Complétée !',
+    description: 'Bravo ! Tu maîtrises maintenant le déroulement des séances.',
+    fields: [
+      { name: '✅ Ce que tu as appris', value: '• Préparer et animer une séance découverte\n• Structurer tes séances récurrentes\n• Utiliser le panier de l\'élève et la fiche de Levin\n• Noter le feedback dans TutorBird' },
+      { name: '🎯 Tu es prêt', value: 'Tu peux maintenant donner tes premières séances avec confiance !' },
+      { name: '➡️ Dernière étape', value: 'Quand tu veux, tu peux faire la **Formation Niveau 2** avec `/complete_training` pour apprendre la **Méthode Centre Reed** et devenir **Tuteur Actif (N2)** !' },
+    ],
+    buttons: [
+      { id: 'btn_N1A_complete', label: '🎓 Terminer', style: 'Success' },
+    ],
+    onSuccess: {
+      nextStep: null,
+      addRoles: [], // Pas de nouveau rôle, garde N1A
+      message: '🎉 **Formation Séances complétée !**\n\nTu es prêt à donner tes premières séances ! 🎓\n\n**Prochaine étape :** Tape `/complete_training` pour faire la Formation Niveau 2 et apprendre la **Méthode Centre Reed** ! 💙',
+    },
+  },
+
+  // ============================================
+  // NIVEAU 2 - Méthode Centre Reed
+  // Commande: /complete_training (requiert rôle N1A)
+  // Résultat: Rôle Tuteur N2 → Accès #équipe
+  // ============================================
+
   'N2-01': {
     id: 'N2-01',
     level: 2,
-    title: '🎓 Bienvenue à la Formation Niveau 2',
-    description: 'Félicitations pour ton appariement ! 🎉\n\nCette formation te préparera à donner tes premières séances et à utiliser TutorBird.\n\n**Ce que tu vas apprendre :**\n• Utiliser TutorBird (plateforme de gestion)\n• Préparer et animer tes premières séances\n• Bonnes pratiques et FAQ',
+    title: '🎓 Formation Finale - Méthode Centre Reed',
+    description: 'Bienvenue à la dernière étape de ta formation !\n\nTu vas maintenant découvrir la **méthode pédagogique Centre Reed** qui te permettra d\'adapter ton enseignement selon les besoins de chaque élève.\n\n**Ce que tu vas apprendre :**\n• La méthode pour le **rattrapage**\n• La méthode pour l\'**enrichissement**\n• Les **bonnes pratiques** professionnelles',
     fields: [
-      { name: '⏱️ Durée', value: '20-30 minutes' },
+      { name: '⏱️ Durée', value: '10-15 minutes' },
       { name: '🎯 Objectif', value: 'Obtenir le rôle **Tuteur N2 (Actif)** et accéder à #équipe' },
     ],
-    footer: 'Clique pour continuer vers la première vidéo.',
     buttons: [
       { id: 'btn_N2_start', label: '▶️ Commencer', style: 'Primary' },
     ],
@@ -120,15 +318,18 @@ module.exports = {
   'N2-02': {
     id: 'N2-02',
     level: 2,
-    title: 'Vidéo 1 — Après acceptation d\'une offre',
-    description: 'Découvre les **emails de confirmation** envoyés au parent et au tuteur, puis l\'**accès à TutorBird**.',
+    title: 'Vidéo 1 — Méthode Centre Reed',
+    description: 'Découvre notre approche pédagogique unique pour le rattrapage et l\'enrichissement.',
     fields: [
       { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
-      { name: 'Contenu du courriel', value: 'Date de début, nb d\'heures/semaine, jours/heures fixes, matière, niveau, infos importantes.' },
-      { name: 'Étape suivante', value: 'Tu reçois un **second email** avec **ton accès à TutorBird**.' },
+      { name: '📉 Rattrapage', value: 'Méthode pour aider les élèves en difficulté à combler leurs lacunes et retrouver confiance' },
+      { name: '📈 Enrichissement', value: 'Méthode pour stimuler les élèves avancés et développer leur plein potentiel' },
+      { name: '⚠️ Annulations', value: 'Préavis obligatoire de **24 heures** pour toute annulation ou déplacement' },
+      { name: '💰 Paies', value: 'Consulter la section **Paies** dans TutorBird pour suivre tes paiements' },
+      { name: '💬 Support', value: 'Écris dans **#support** sur Discord ou contacte ton **superviseur académique** pour toute question' },
     ],
     buttons: [
-      { id: 'btn_N2_v1_done', label: '🎥 Vidéo 1 vue', style: 'Primary' },
+      { id: 'btn_N2_video_done', label: '🎥 Vidéo vue', style: 'Primary' },
     ],
     nextStep: 'N2-03',
   },
@@ -137,36 +338,46 @@ module.exports = {
     id: 'N2-03',
     level: 2,
     type: 'quiz',
-    title: 'Quiz — Email de confirmation & Accès TutorBird',
-    description: 'Vérifie ta compréhension du processus post-acceptation.',
+    title: 'Quiz — Méthode Centre Reed',
+    description: 'Dernier quiz pour valider ta formation complète !',
     questions: [
       {
-        q: "Que contient l'email de confirmation ?",
+        q: 'La méthode Centre Reed pour le rattrapage vise à :',
         options: [
-          'Lien Google Classroom',
-          "Horaires, matières, nb d'heures et infos importantes",
-          "Notes de l'élève",
-          "Contrat d'emploi complet",
+          'Faire uniquement des exercices répétitifs',
+          'Combler les lacunes et redonner confiance à l\'élève',
+          'Avancer plus vite dans le programme',
+          'Se concentrer uniquement sur les examens',
         ],
         correctIndex: 1,
       },
       {
-        q: 'Quel email reçois-tu ensuite ?',
-        options: ['Rappel des valeurs', 'Accès à TutorBird', 'Message du parent', "Sondage d'opinion"],
+        q: 'Quel est le délai minimum pour annuler ou déplacer une séance ?',
+        options: ['6 heures', '12 heures', '24 heures', '48 heures'],
+        correctIndex: 2,
+      },
+      {
+        q: 'Où vérifier tes paiements ?',
+        options: [
+          'Google Drive',
+          'Section Paies dans TutorBird',
+          'Message Discord',
+          'Site web Centre Reed',
+        ],
         correctIndex: 1,
       },
       {
-        q: 'TutorBird sert à :',
+        q: 'Si tu as une question ou un problème, que fais-tu ?',
         options: [
-          "Discuter avec l'élève",
-          'Gérer séances, suivis et paies',
-          'Créer des devoirs auto-corrigés',
-          'Gérer les inscriptions',
+          'Attendre la fin du mois',
+          'Contacter directement le parent',
+          'Écrire dans #support ou contacter ton superviseur',
+          'Ne rien faire',
         ],
-        correctIndex: 1,
+        correctIndex: 2,
       },
     ],
-    passMessage: '✅ Parfait. Passons à **TutorBird & premières séances**.',
+    passMessage: '🏅 **Formation complète réussie !**',
     failMessage: '❌ Revois la vidéo et réessaie.',
     onPass: {
       nextStep: 'N2-04',
@@ -179,116 +390,21 @@ module.exports = {
   'N2-04': {
     id: 'N2-04',
     level: 2,
-    title: 'Vidéo 2 — TutorBird & Premières séances (7–9 min)',
-    description: 'Présentation du **Dashboard**, **Calendrier**, **Ressources**, **Paies**, **Feedback**. Puis : **première séance** (panier élève, outil de Levin, documents) et **séances suivantes** (présence, lien avec séances précédentes, théorie vs exercices, recap & feedback).',
+    title: '🏆 Toutes nos félicitations !',
+    description: 'Tu as terminé l\'intégralité de la formation Centre Reed !',
     fields: [
-      { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
-      { name: 'Première séance', value: '1) Panier de l\'élève (Drive)\n2) Outil de Levin\n3) Évaluation initiale\n4) Démarrer en créant le lien' },
-      { name: 'Séances suivantes', value: 'Présence • Rappel • Mise à jour élève • Évaluation rapide • Adapter (théorie/exos) • Teach-back • Récap + feedback' },
+      { name: '✅ Tu as appris', value: '• Les outils Discord et TutorBird\n• Comment préparer et animer tes séances\n• La méthode pédagogique Centre Reed\n• Les bonnes pratiques professionnelles' },
+      { name: '🎁 Récompense finale', value: 'Tu viens de recevoir le rôle **Tuteur - Niveau 2 (Actif)** !' },
+      { name: '🔓 Accès débloqué', value: 'Tu as maintenant accès au canal **#équipe** pour échanger avec toute l\'équipe de tuteurs !' },
+      { name: '💙 Bienvenue', value: 'Tu fais maintenant officiellement partie de l\'équipe Centre Reed. Bon tutorat !' },
     ],
     buttons: [
-      { id: 'btn_N2_v2_done', label: '🎥 Vidéo 2 vue', style: 'Primary' },
+      { id: 'btn_N2_complete', label: '🎉 Terminer la formation', style: 'Success' },
     ],
-    nextStep: 'N2-05',
-  },
-
-  'N2-05': {
-    id: 'N2-05',
-    level: 2,
-    type: 'quiz',
-    title: 'Quiz — Première séance & Séances suivantes',
-    description: 'Valide ta compréhension des bonnes pratiques de séance.',
-    questions: [
-      {
-        q: 'Avant la première séance, tu dois :',
-        options: [
-          "Appeler l'élève directement",
-          "Consulter le panier et l'outil de Levin",
-          'Envoyer des exercices',
-          'Remplir le rapport de séance',
-        ],
-        correctIndex: 1,
-      },
-      {
-        q: "L'outil de Levin sert à :",
-        options: [
-          'Calculer les notes',
-          "Évaluer le style & forces d'apprentissage",
-          'Planifier les vacances',
-          'Corriger les exos',
-        ],
-        correctIndex: 1,
-      },
-      {
-        q: 'En fin de séance, tu dois :',
-        options: ['Rien faire', 'Récap + feedback TutorBird', 'Attendre le parent', 'Refaire toute la séance'],
-        correctIndex: 1,
-      },
-    ],
-    passMessage: '✅ Super. Il reste la **FAQ & Bonnes pratiques**.',
-    failMessage: '❌ Revois la vidéo et réessaie.',
-    onPass: {
-      nextStep: 'N2-06',
-    },
-    onFail: {
-      retryStep: 'N2-04',
-    },
-  },
-
-  'N2-06': {
-    id: 'N2-06',
-    level: 2,
-    title: 'Vidéo 3 — FAQ & Bonnes pratiques (5–7 min)',
-    description: 'Questions fréquentes : **changements/annulations (24h)**, **paies (TutorBird)**, **communication (canal support Discord / superviseur)**. Rappels de professionnalisme.',
-    fields: [
-      { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
-      { name: 'Annulations', value: 'Préavis **24h**' },
-      { name: 'Paies', value: 'Section **Paies** dans TutorBird' },
-      { name: "Besoin d'aide ?", value: 'Écris dans **#support** ou contacte ton **superviseur académique**' },
-    ],
-    buttons: [
-      { id: 'btn_N2_v3_done', label: '🎥 Vidéo 3 vue', style: 'Primary' },
-    ],
-    nextStep: 'N2-07',
-  },
-
-  'N2-07': {
-    id: 'N2-07',
-    level: 2,
-    type: 'quiz',
-    title: 'Quiz — FAQ & Bonnes pratiques',
-    description: 'Dernier quiz pour valider ta formation complète !',
-    questions: [
-      {
-        q: "Quel est le délai minimum d'annulation/déplacement ?",
-        options: ['6h', '12h', '24h', '48h'],
-        correctIndex: 2,
-      },
-      {
-        q: 'Où vérifier tes paiements ?',
-        options: ['Google Drive', 'TutorBird', 'Message Discord', 'Site Centre Reed'],
-        correctIndex: 1,
-      },
-      {
-        q: 'Question/problème — que faire ?',
-        options: [
-          'Attendre la fin du mois',
-          'Contacter un collègue',
-          'Écrire dans le canal support ou au superviseur académique',
-          'Appeler le parent',
-        ],
-        correctIndex: 2,
-      },
-    ],
-    passMessage: '🏅 **Niveau 2 complété !**',
-    failMessage: '❌ Revois la vidéo et réessaie.',
-    onPass: {
+    onSuccess: {
       nextStep: null,
       addRoles: ['tuteurN2'],
-      message: '🎉 **Formation Niveau 2 complétée !**\n\nTu es maintenant **Tuteur - Niveau 2 (Actif)** ! 🎓\n\n🔓 Tu as maintenant accès au canal **#équipe** pour communiquer avec l\'équipe.\n\nTu es prêt à enseigner avec toute la rigueur Reed ! Bon tutorat ! 💙',
-    },
-    onFail: {
-      retryStep: 'N2-06',
+      message: '🎉 **Tu es maintenant Tuteur - Niveau 2 (Actif) !**\n\n🔓 Accès débloqué : <#' + config.channels.equipe + '>\n\n**Tu es prêt à enseigner avec toute la rigueur Reed !** 💙\n\nBienvenue dans l\'équipe ! 🎓',
     },
   },
 };

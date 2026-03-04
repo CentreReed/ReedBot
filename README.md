@@ -223,3 +223,6 @@ Propriété du Centre Reed - Usage interne uniquement.
 Pour toute question, contactez l'équipe technique du Centre Reed.
 
 **Made with ❤️ for Reed Tutoring**
+⚪
+🟡
+🔴

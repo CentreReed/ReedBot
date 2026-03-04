@@ -72,7 +72,7 @@ client.on('interactionCreate', async (interaction) => {
     });
   }
 
-  // Commande /finish_onboarding - Formation Niveau 2
+  // Commande /finish_onboarding - Formation N1A (Séances)
   if (interaction.commandName === 'finish_onboarding') {
     // Vérifier que la commande est utilisée dans le bon canal
     if (interaction.channelId !== config.channels.onboarding) {
@@ -91,11 +91,71 @@ client.on('interactionCreate', async (interaction) => {
     if (!hasN1A) {
       await interaction.reply({
         content: '❌ **Tu ne peux pas encore accéder à cette formation.**\n\n' +
-          'Pour faire la Formation Niveau 2, tu dois :\n' +
+          'Pour faire la Formation Séances (N1A), tu dois :\n' +
           '1️⃣ Compléter la Formation Niveau 1 (`/start_onboarding`)\n' +
           '2️⃣ Postuler à une offre dans le canal des contrats\n' +
           '3️⃣ Être accepté et recevoir le rôle **Tuteur - Apparié (N1A)**\n\n' +
-          '**Reviens ensuite pour finir ton onboarding !** 🎓',
+          '**Reviens ensuite pour apprendre à animer tes séances !** 🎓',
+        flags: [MessageFlags.Ephemeral],
+      });
+      return;
+    }
+
+    const embed = new EmbedBuilder()
+      .setColor('#00D9FF')
+      .setTitle('🎉 Formation Séances - Centre Reed')
+      .setDescription(
+        'Félicitations pour ton appariement ! 🎉\n\n' +
+        'Cette formation te préparera à animer tes premières séances.\n\n' +
+        '**Ce que tu vas accomplir :**\n' +
+        '• 📹 Vidéo 1 : Séance Découverte (première séance)\n' +
+        '• 📹 Vidéo 2 : Séances Récurrentes\n' +
+        '• 📝 2 Quiz de validation\n\n' +
+        '**Résultat :**\n' +
+        '✅ Tu seras prêt à donner tes premières séances !'
+      )
+      .addFields(
+        { name: '⏱️ Durée estimée', value: '15-20 minutes' }
+      )
+      .setFooter({ text: 'Centre Reed - Formation N1A' })
+      .setTimestamp();
+
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('start_n1a_flow')
+        .setLabel('🚀 Commencer Formation Séances')
+        .setStyle(ButtonStyle.Primary)
+    );
+
+    await interaction.reply({
+      embeds: [embed],
+      components: [row],
+    });
+  }
+
+  // Commande /complete_training - Formation N2 (Méthode Centre Reed)
+  if (interaction.commandName === 'complete_training') {
+    // Vérifier que la commande est utilisée dans le bon canal
+    if (interaction.channelId !== config.channels.onboarding) {
+      await interaction.reply({
+        content: '❌ Cette commande doit être utilisée dans le canal <#' + config.channels.onboarding + '>',
+        flags: [MessageFlags.Ephemeral],
+      });
+      return;
+    }
+
+    // Vérifier que l'utilisateur a le rôle N1A (Apparié)
+    const guild = interaction.guild;
+    const member = await guild.members.fetch(interaction.user.id);
+    const hasN1A = config.roles.tuteurN1A && member.roles.cache.has(config.roles.tuteurN1A);
+
+    if (!hasN1A) {
+      await interaction.reply({
+        content: '❌ **Tu ne peux pas encore accéder à cette formation.**\n\n' +
+          'Pour faire la Formation Niveau 2 (Méthode Centre Reed), tu dois :\n' +
+          '1️⃣ Compléter la Formation Niveau 1 (`/start_onboarding`)\n' +
+          '2️⃣ Être accepté à une offre et recevoir le rôle **Tuteur - Apparié (N1A)**\n\n' +
+          '**Reviens ensuite pour compléter ta formation !** 🎓',
         flags: [MessageFlags.Ephemeral],
       });
       return;
@@ -103,19 +163,19 @@ client.on('interactionCreate', async (interaction) => {
 
     const embed = new EmbedBuilder()
       .setColor('#00FF00')
-      .setTitle('🎓 Formation Niveau 2 - Centre Reed')
+      .setTitle('🎓 Formation Niveau 2 - Méthode Centre Reed')
       .setDescription(
-        'Félicitations pour ton appariement ! 🎉\n\n' +
-        'Cette formation finale te préparera à donner tes premières séances.\n\n' +
+        'Bienvenue à la dernière étape de ta formation ! 🎓\n\n' +
+        'Tu vas maintenant découvrir la méthode pédagogique Centre Reed.\n\n' +
         '**Ce que tu vas accomplir :**\n' +
-        '• 📹 3 Vidéos : TutorBird, Premières séances, FAQ\n' +
-        '• 📝 3 Quiz de validation\n\n' +
+        '• 📹 Vidéo : Méthode Rattrapage & Enrichissement\n' +
+        '• 📝 Quiz de validation\n\n' +
         '**Résultat :**\n' +
         '✅ Rôle **Tuteur - Niveau 2 (Actif)**\n' +
         '🔓 Accès au canal **#équipe**'
       )
       .addFields(
-        { name: '⏱️ Durée estimée', value: '20-30 minutes' }
+        { name: '⏱️ Durée estimée', value: '10-15 minutes' }
       )
       .setFooter({ text: 'Centre Reed - Formation N2' })
       .setTimestamp();
@@ -175,6 +235,38 @@ client.on('interactionCreate', async (interaction) => {
     return;
   }
 
+  // Start N1A flow
+  if (interaction.customId === 'start_n1a_flow') {
+    try {
+      // Create private thread for N1A
+      const thread = await interaction.channel.threads.create({
+        name: `Formation Séances - ${interaction.user.username}`,
+        autoArchiveDuration: 1440, // 24 hours
+        type: 12, // Private thread
+        reason: 'Formation N1A - Séances',
+      });
+
+      await thread.members.add(userId);
+
+      // Set progress to N1A-01
+      progressManager.setUserProgress(userId, 'N1A-01');
+
+      await sendStep(thread, userId, 'N1A-01');
+
+      await interaction.reply({
+        content: `✅ Ton thread de Formation Séances a été créé : ${thread}\n\nSuis les instructions à l'intérieur !`,
+        flags: [MessageFlags.Ephemeral],
+      });
+    } catch (error) {
+      console.error('Error creating thread:', error);
+      await interaction.reply({
+        content: '❌ Erreur lors de la création du thread. Contacte un administrateur.',
+        flags: [MessageFlags.Ephemeral],
+      });
+    }
+    return;
+  }
+
   // Start N2 flow
   if (interaction.customId === 'start_n2_flow') {
     try {
@@ -183,7 +275,7 @@ client.on('interactionCreate', async (interaction) => {
         name: `Formation N2 - ${interaction.user.username}`,
         autoArchiveDuration: 1440, // 24 hours
         type: 12, // Private thread
-        reason: 'Formation Niveau 2 - TutorBird & Séances',
+        reason: 'Formation Niveau 2 - Méthode Centre Reed',
       });
 
       await thread.members.add(userId);
