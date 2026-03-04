@@ -359,50 +359,58 @@ client.on('interactionCreate', async (interaction) => {
 
     // Regular step progression
     if (currentStep.type !== 'quiz' && currentStep.type !== 'completion' && currentStep.nextStep) {
-      progressManager.setUserProgress(userId, currentStep.nextStep);
-      await sendStep(interaction.channel, userId, currentStep.nextStep);
-      await interaction.deferUpdate();
+      try {
+        await interaction.deferUpdate(); // Acknowledge first!
+        progressManager.setUserProgress(userId, currentStep.nextStep);
+        await sendStep(interaction.channel, userId, currentStep.nextStep);
+      } catch (error) {
+        console.error('❌ Error in step progression:', error.message);
+      }
       return;
     }
 
     // Completion step (N1-04, N1A-06, N2-04)
     if (currentStep.type === 'completion') {
       if (currentStep.onSuccess) {
-        // Assign roles
-        const guild = interaction.guild;
-        const member = await guild.members.fetch(userId);
+        try {
+          // Assign roles
+          const guild = interaction.guild;
+          const member = await guild.members.fetch(userId);
 
-        if (currentStep.onSuccess.addRoles) {
-          for (const roleKey of currentStep.onSuccess.addRoles) {
-            const roleId = config.roles[roleKey];
-            if (roleId && !roleId.startsWith('ROLE_ID_')) {
-              try {
-                await member.roles.add(roleId);
-                console.log(`✅ Rôle ${roleKey} ajouté à ${member.user.tag}`);
-              } catch (err) {
-                console.error(`Error adding role ${roleKey}:`, err);
+          if (currentStep.onSuccess.addRoles) {
+            for (const roleKey of currentStep.onSuccess.addRoles) {
+              const roleId = config.roles[roleKey];
+              if (roleId && !roleId.startsWith('ROLE_ID_')) {
+                try {
+                  await member.roles.add(roleId);
+                  console.log(`✅ Rôle ${roleKey} ajouté à ${member.user.tag}`);
+                } catch (err) {
+                  console.error(`Error adding role ${roleKey}:`, err);
+                }
               }
             }
           }
+
+          const successEmbed = new EmbedBuilder()
+            .setColor('#00FF00')
+            .setTitle('✅ Formation complétée !')
+            .setDescription(currentStep.onSuccess.message)
+            .setTimestamp();
+
+          await interaction.update({
+            embeds: [successEmbed],
+            components: [],
+          });
+
+          // Archive thread after completion
+          setTimeout(async () => {
+            if (interaction.channel.isThread()) {
+              await interaction.channel.setArchived(true);
+            }
+          }, 15000);
+        } catch (error) {
+          console.error('❌ Error in completion step:', error.message);
         }
-
-        const successEmbed = new EmbedBuilder()
-          .setColor('#00FF00')
-          .setTitle('✅ Formation complétée !')
-          .setDescription(currentStep.onSuccess.message)
-          .setTimestamp();
-
-        await interaction.update({
-          embeds: [successEmbed],
-          components: [],
-        });
-
-        // Archive thread after completion
-        setTimeout(async () => {
-          if (interaction.channel.isThread()) {
-            await interaction.channel.setArchived(true);
-          }
-        }, 15000);
       }
       return;
     }
@@ -671,8 +679,8 @@ async function evaluateQuiz(interaction, userId, quizData) {
           }
         }, 10000);
       }, 2000);
-    } else if (step.onPass.nextStep) {
-      // Send next step
+    } else if (step.onPass.nextStep && !components.length) {
+      // Only send next step if there's NO "Continuer" button (to avoid duplication)
       setTimeout(async () => {
         await sendStep(interaction.channel, userId, step.onPass.nextStep);
       }, 2000);
