@@ -358,15 +358,15 @@ client.on('interactionCreate', async (interaction) => {
     }
 
     // Regular step progression
-    if (currentStep.type !== 'quiz' && currentStep.type !== 'practice' && currentStep.nextStep) {
+    if (currentStep.type !== 'quiz' && currentStep.type !== 'completion' && currentStep.nextStep) {
       progressManager.setUserProgress(userId, currentStep.nextStep);
       await sendStep(interaction.channel, userId, currentStep.nextStep);
       await interaction.deferUpdate();
       return;
     }
 
-    // Practice step (N1-04)
-    if (currentStep.type === 'practice') {
+    // Completion step (N1-04, N1A-06, N2-04)
+    if (currentStep.type === 'completion') {
       if (currentStep.onSuccess) {
         // Assign roles
         const guild = interaction.guild;

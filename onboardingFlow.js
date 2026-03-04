@@ -101,6 +101,7 @@ module.exports = {
   'N1-04': {
     id: 'N1-04',
     level: 1,
+    type: 'completion',
     title: '🎉 Formation Niveau 1 Complétée !',
     description: 'Félicitations ! Tu as terminé la première étape de ta formation.',
     fields: [
@@ -277,6 +278,7 @@ module.exports = {
   'N1A-06': {
     id: 'N1A-06',
     level: '1A',
+    type: 'completion',
     title: '✅ Formation Séances Complétée !',
     description: 'Bravo ! Tu maîtrises maintenant le déroulement des séances.',
     fields: [
@@ -390,6 +392,7 @@ module.exports = {
   'N2-04': {
     id: 'N2-04',
     level: 2,
+    type: 'completion',
     title: '🏆 Toutes nos félicitations !',
     description: 'Tu as terminé l\'intégralité de la formation Centre Reed !',
     fields: [
