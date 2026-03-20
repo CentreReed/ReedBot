@@ -30,15 +30,11 @@ client.once('clientReady', async () => {
     const commands = [
       new SlashCommandBuilder()
         .setName('start_onboarding')
-        .setDescription('Démarrer la Formation Niveau 1 (Outils & Appariement)')
+        .setDescription('Démarrer la Formation Niveau 1 (Discord et application)')
         .toJSON(),
       new SlashCommandBuilder()
         .setName('finish_onboarding')
-        .setDescription('Formation Séances (Découverte & Récurrentes) - Requiert rôle Apparié')
-        .toJSON(),
-      new SlashCommandBuilder()
-        .setName('complete_training')
-        .setDescription('Formation Niveau 2 (Méthode Centre Reed) - Requiert rôle Apparié')
+        .setDescription('Formation complète Reed (4 vidéos, 4 quiz) - Requiert rôle apparié')
         .toJSON(),
       ...shiftCommands,
     ];
@@ -84,13 +80,13 @@ client.on('interactionCreate', async (interaction) => {
       .setColor('#FFA500')
       .setTitle('🎓 Formation Niveau 1 - Centre Reed')
       .setDescription(
-        'Bienvenue ! Cette formation te permettra d\'apprendre à utiliser Discord et postuler aux offres.\n\n' +
+        'Bienvenue ! Cette formation te permettra d\'apprendre à utiliser Discord et à savoir comment appliquer aux offres de tutorat.\n\n' +
         '**Ce que tu vas accomplir :**\n' +
-        '• 📹 Vidéo : Discord & Applications\n' +
+        '• 📹 Vidéo : Discord et savoir comment appliquer\n' +
         '• 📝 Quiz de validation\n\n' +
         '**Résultat :**\n' +
-        '✅ Rôle **Tuteur - Niveau 1**\n' +
-        '🔓 Accès au canal #offres pour postuler'
+        '✅ Rôle **Tuteur - niveau 1**\n' +
+        '🔓 Accès au canal #OFFRES pour appliquer'
       )
       .addFields(
         { name: '⏱️ Durée estimée', value: '5-10 minutes' }
@@ -101,7 +97,7 @@ client.on('interactionCreate', async (interaction) => {
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('start_n1_flow')
-        .setLabel('🚀 Commencer Formation N1')
+        .setLabel('🚀 Commencer la formation N1')
         .setStyle(ButtonStyle.Primary)
     );
 
@@ -135,10 +131,10 @@ client.on('interactionCreate', async (interaction) => {
     if (!hasN1A) {
       await interaction.reply({
         content: '❌ **Tu ne peux pas encore accéder à cette formation.**\n\n' +
-          'Pour faire la Formation Complète (Niveau 2), tu dois :\n' +
+          'Pour faire la formation complète, tu dois :\n' +
           '1️⃣ Compléter la Formation Niveau 1 (`/start_onboarding`)\n' +
-          '2️⃣ Postuler à une offre dans le canal #offres\n' +
-          '3️⃣ Être accepté et recevoir le rôle **Tuteur - Apparié (N1A)**\n\n' +
+          '2️⃣ Appliquer à une offre dans le canal #OFFRES\n' +
+          '3️⃣ Être accepté et recevoir le rôle **Tuteur - niveau 1A**\n\n' +
           '**Reviens ensuite pour terminer ta formation !** 🎓',
         flags: [MessageFlags.Ephemeral],
       });
@@ -150,16 +146,21 @@ client.on('interactionCreate', async (interaction) => {
       .setTitle('🎉 Formation Complète - Centre Reed')
       .setDescription(
         'Félicitations pour ton appariement ! 🎉\n\n' +
-        'Cette formation complète te préparera à devenir tuteur actif.\n\n' +
-        '**Ce que tu vas accomplir :**\n' +
-        '• 📹 4 Vidéos : Méthode, Outils, Séances\n' +
-        '• 📝 4 Quiz de validation\n\n' +
+        'Cette formation complète te préparera à devenir un tuteur certifié au sein du Centre Reed.\n\n' +
+        '**Ce que tu vas apprendre :**\n' +
+        '• La Méthode Reed\n' +
+        '• Utiliser nos principaux outils et ressources numériques\n' +
+        '• Comment se réalisent la Séance Découverte et les Séances récurrentes\n\n' +
+        '**Format :**\n' +
+        '• 📹 4 vidéos : Méthode, Outils et ressources, Séance Découverte, Séances récurrentes\n' +
+        '• 📝 4 quiz de validation\n\n' +
         '**Résultat :**\n' +
-        '✅ Rôle **Tuteur - Niveau 2 (Actif)**\n' +
-        '🔓 Accès aux canaux **#annonce** et **#formation**'
+        '✅ Rôle **Tuteur - niveau 2**\n' +
+        '🔓 Accès aux canaux **#ANNONCE** et **#FORMATION**'
       )
       .addFields(
-        { name: '⏱️ Durée estimée', value: '30-40 minutes' }
+        { name: '⏱️ Durée estimée', value: '1h20' },
+        { name: '🎯 Objectif', value: 'Devenir un tuteur certifié au sein du Centre Reed (N2 Actif)' }
       )
       .setFooter({ text: 'Centre Reed - Formation N2' })
       .setTimestamp();
@@ -167,7 +168,7 @@ client.on('interactionCreate', async (interaction) => {
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('start_n2_flow')
-        .setLabel('🚀 Commencer Formation Complète')
+        .setLabel('🚀 Commencer la formation complète')
         .setStyle(ButtonStyle.Success)
     );
 
@@ -196,7 +197,7 @@ client.on('interactionCreate', async (interaction) => {
         name: `Formation N1 - ${interaction.user.username}`,
         autoArchiveDuration: 1440, // 24 hours
         type: 12, // Private thread
-        reason: 'Formation Niveau 1 - Appariement & Bidding',
+        reason: 'Formation Niveau 1 - Discord et application aux offres',
       });
 
       await thread.members.add(userId);
@@ -228,7 +229,7 @@ client.on('interactionCreate', async (interaction) => {
         name: `Formation Complète - ${interaction.user.username}`,
         autoArchiveDuration: 1440, // 24 hours
         type: 12, // Private thread
-        reason: 'Formation Niveau 2 - Complète',
+        reason: 'Formation complète Reed - 4 vidéos et 4 quiz',
       });
 
       await thread.members.add(userId);
@@ -290,7 +291,7 @@ client.on('interactionCreate', async (interaction) => {
       return;
     }
 
-    // Completion step (N1-04, N1A-06, N2-04)
+    // Completion step (N1-04, N2-10)
     if (currentStep.type === 'completion') {
       if (currentStep.onSuccess) {
         try {

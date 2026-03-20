@@ -3,19 +3,19 @@ const config = require('./config');
 
 module.exports = {
   // ============================================
-  // NIVEAU 1 - Discord & Applications
+  // NIVEAU 1 - Discord et savoir comment appliquer
   // Commande: /start_onboarding
-  // Résultat: Rôle Tuteur N1 → Accès #offres
+  // Résultat: Rôle Tuteur N1 → Accès #OFFRES
   // ============================================
 
   'N1-01': {
     id: 'N1-01',
     level: 1,
     title: '🎯 Bienvenue au Centre Reed - Formation Niveau 1',
-    description: 'Bienvenue ! Tu vas maintenant apprendre à utiliser **Discord** et à **postuler aux offres** d\'élèves.\n\n**Ce que tu vas accomplir :**\n• Découvrir le canal #offres\n• Comprendre comment postuler aux offres\n• Débloquer le rôle **Tuteur - Niveau 1**',
+    description: 'Bienvenue ! Tu vas maintenant apprendre à utiliser **Discord** et à **savoir comment appliquer** aux offres de tutorat.\n\n**Ce que tu vas accomplir :**\n• Découvrir le canal #OFFRES\n• Comprendre comment appliquer aux offres de tutorat et de mandat\n• Débloquer le rôle **Tuteur - niveau 1**',
     fields: [
       { name: '⏱️ Durée', value: '5-10 minutes' },
-      { name: '🎯 Objectif', value: 'Obtenir le rôle **Tuteur N1** et accéder à #offres' },
+      { name: '🎯 Objectif', value: 'Obtenir le rôle **Tuteur - niveau 1** et accéder à #OFFRES' },
     ],
     buttons: [
       { id: 'btn_N1_start', label: '🚀 Commencer', style: 'Primary' },
@@ -26,13 +26,13 @@ module.exports = {
   'N1-02': {
     id: 'N1-02',
     level: 1,
-    title: 'Vidéo 1 — Discord & Applications',
-    description: 'Découvre comment naviguer dans Discord et postuler aux offres d\'élèves.',
+    title: 'Vidéo 1 — Discord : savoir comment appliquer',
+    description: 'Découvre comment naviguer dans Discord et comment appliquer aux offres de tutorat.',
     fields: [
       { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/ham62aTgKw0)' },
-      { name: '📱 Canal #offres', value: 'C\'est ici que les offres d\'élèves sont publiées' },
-      { name: '✅ Comment postuler', value: 'Clique sur le bouton "Postuler" sous chaque offre pour soumettre ta candidature' },
-      { name: '⏱️ Durée des offres', value: 'Les offres restent ouvertes 24h, postule rapidement !' },
+      { name: '📱 Canal #OFFRES', value: 'C\'est ici que les offres de tutorat et de mandat sont publiées' },
+      { name: '✅ Comment appliquer', value: 'Clique sur le bouton "Postuler" sous chaque offre pour soumettre ta candidature' },
+      { name: '⏱️ Durée des offres', value: 'Les offres restent ouvertes 24h, applique rapidement !' },
       { name: '⏱️ Durée', value: '3-5 minutes' },
     ],
     buttons: [
@@ -45,21 +45,21 @@ module.exports = {
     id: 'N1-03',
     level: 1,
     type: 'quiz',
-    title: 'Quiz — Discord & Applications',
-    description: 'Teste tes connaissances sur le processus de postulation.',
+    title: 'Quiz — Discord et offres de tutorat',
+    description: 'Teste tes connaissances sur le processus pour appliquer aux offres.',
     questions: [
       {
-        q: 'Où postules-tu aux offres d\'élèves ?',
+        q: 'Où appliques-tu aux offres de tutorat ?',
         options: [
           'Sur le site web Centre Reed',
-          'Dans le canal #offres sur Discord',
+          'Dans le canal #OFFRES sur Discord',
           'Par courriel à la direction',
           'Sur un formulaire externe',
         ],
         correctIndex: 1,
       },
       {
-        q: 'Comment postuler à une offre ?',
+        q: 'Comment appliquer à une offre ?',
         options: [
           'Envoyer un courriel',
           'Cliquer sur le bouton "Postuler" sous l\'offre',
@@ -93,13 +93,13 @@ module.exports = {
     id: 'N1-04',
     level: 1,
     type: 'completion',
-    title: '🎉 Formation Niveau 1 Complétée !',
+    title: '🎉 Formation Niveau 1 complétée !',
     description: 'Félicitations ! Tu as terminé la première étape de ta formation.',
     fields: [
-      { name: '✅ Ce que tu as appris', value: '• Navigation Discord\n• Processus de postulation dans #offres\n• Comment cliquer sur "Postuler"' },
-      { name: '🎁 Récompense', value: 'Tu viens de recevoir le rôle **Tuteur - Niveau 1** !' },
-      { name: '🔓 Accès débloqué', value: 'Tu peux maintenant voir et postuler aux offres dans **#offres**' },
-      { name: '➡️ Prochaine étape', value: 'Une fois que tu seras **accepté à une offre**, tu recevras le rôle **Tuteur - Apparié (N1A)**.\n\nTu pourras alors continuer ta formation complète avec `/finish_onboarding` !' },
+      { name: '✅ Ce que tu as appris', value: '• Navigation Discord\n• Comment appliquer dans #OFFRES\n• Comprendre les offres de tutorat et de mandat' },
+      { name: '🎁 Récompense', value: 'Tu viens de recevoir le rôle **Tuteur - niveau 1** !' },
+      { name: '🔓 Accès débloqué', value: 'Tu peux maintenant voir et appliquer aux offres dans **#OFFRES**' },
+      { name: '➡️ Prochaine étape', value: 'Une fois que tu seras **accepté à une offre**, tu recevras le rôle **Tuteur - niveau 1A**.\n\nTu pourras alors continuer ta formation complète avec `/finish_onboarding` !' },
     ],
     buttons: [
       { id: 'btn_N1_complete', label: '🎓 Terminer', style: 'Success' },
@@ -107,24 +107,24 @@ module.exports = {
     onSuccess: {
       nextStep: null,
       addRoles: ['tuteurN1'],
-      message: '🎉 **Tu es maintenant Tuteur - Niveau 1 !**\n\n🔓 Accès débloqué : <#' + config.channels.contrats + '>\n\n**Prochaine étape :** Postule à une offre et attends d\'être accepté pour continuer ta formation ! 💙',
+      message: '🎉 **Tu es maintenant Tuteur - niveau 1 !**\n\n🔓 Accès débloqué : <#' + config.channels.contrats + '>\n\n**Prochaine étape :** Applique à une offre et attends d\'être accepté pour continuer ta formation ! 💙',
     },
   },
 
   // ============================================
-  // NIVEAU 2 - Formation Complète (N1A → N2)
+  // NIVEAU 2 - Formation complète (N1A → N2)
   // Commande: /finish_onboarding (requiert rôle N1A)
-  // Résultat: Rôle Tuteur N2 → Accès #annonce + #formation
+  // Résultat: Rôle Tuteur N2 → Accès #ANNONCE + #FORMATION
   // ============================================
 
   'N2-01': {
     id: 'N2-01',
     level: 2,
     title: '🎉 Félicitations pour ton appariement !',
-    description: 'Bravo ! Tu as été accepté à une offre et tu es maintenant **Tuteur - Apparié (N1A)**.\n\nCette formation complète te préparera à devenir un **tuteur actif** au Centre Reed.\n\n**Ce que tu vas apprendre :**\n• La **méthode pédagogique** Centre Reed\n• Utiliser **TutorBird**\n• Animer ta **séance découverte**\n• Structurer tes **séances récurrentes**',
+    description: 'Bravo ! Tu as été accepté à une offre et tu es maintenant **Tuteur - niveau 1A**.\n\n**Ce que tu vas apprendre :**\n• La Méthode Reed\n• Utiliser nos principaux outils et ressources numériques\n• Comment se réalisent la Séance Découverte et les Séances récurrentes',
     fields: [
-      { name: '⏱️ Durée', value: '30-40 minutes' },
-      { name: '🎯 Objectif', value: 'Obtenir le rôle **Tuteur N2 (Actif)** et accéder à #annonce + #formation' },
+      { name: '⏱️ Durée', value: '1h20' },
+      { name: '🎯 Objectif', value: 'Devenir un tuteur certifié au sein du Centre Reed (N2 Actif)' },
     ],
     buttons: [
       { id: 'btn_N2_start', label: '▶️ Commencer', style: 'Primary' },
@@ -136,11 +136,12 @@ module.exports = {
     id: 'N2-02',
     level: 2,
     title: 'Vidéo 1 — Méthode Centre Reed',
-    description: 'Découvre notre approche pédagogique unique pour le rattrapage et l\'enrichissement.',
+    description: 'Découvre notre approche pédagogique et notre philosophie au sein du centre.',
     fields: [
       { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
-      { name: '📉 Rattrapage', value: 'Méthode pour aider les élèves en difficulté à combler leurs lacunes et retrouver confiance' },
-      { name: '📈 Enrichissement', value: 'Méthode pour stimuler les élèves avancés et développer leur plein potentiel' },
+      { name: 'Notre vision', value: 'Comprendre la mission du Centre Reed et la finalité de notre accompagnement.' },
+      { name: 'Tuteur exemplaire', value: 'Adopter la posture attendue d\'un tuteur Reed dans sa relation avec l\'élève.' },
+      { name: 'Méthodes pédagogiques détaillées', value: 'Explorer les principes qui guident la méthode Reed durant les séances.' },
     ],
     buttons: [
       { id: 'btn_N2_v1_done', label: '🎥 Vidéo 1 vue', style: 'Primary' },
@@ -152,31 +153,61 @@ module.exports = {
     id: 'N2-03',
     level: 2,
     type: 'quiz',
-    title: 'Quiz — Méthode Centre Reed',
-    description: 'Teste ta compréhension de la méthode pédagogique.',
+    title: 'Quiz — Formation 1 : La méthode Reed',
+    description: 'Valide ta compréhension de la méthode Reed.',
     questions: [
       {
-        q: 'La méthode Centre Reed pour le rattrapage vise à :',
+        q: 'Quel est l’objectif principal du Centre Reed dans l’accompagnement des élèves ?',
         options: [
-          'Faire uniquement des exercices répétitifs',
-          'Combler les lacunes et redonner confiance à l\'élève',
-          'Avancer plus vite dans le programme',
-          'Se concentrer uniquement sur les examens',
+          'Rendre l’élève autonome dans son apprentissage',
+          'Améliorer les notes rapidement',
+          'Compléter les devoirs le plus vite possible',
+          'Préparer uniquement les examens',
+        ],
+        correctIndex: 0,
+      },
+      {
+        q: 'Selon la vision du Centre Reed, quel est l’objectif à long terme ?',
+        options: [
+          'Augmenter la motivation scolaire',
+          'Développer les fonctions exécutives',
+          'Réussir les examens finaux',
+          'Compléter les devoirs sans aide',
         ],
         correctIndex: 1,
       },
       {
-        q: 'L\'enrichissement sert à :',
+        q: 'Quel élément est considéré comme la clé #1 de la réussite d’un élève ?',
         options: [
-          'Rattraper les retards',
-          'Développer le plein potentiel des élèves avancés',
-          'Préparer les examens seulement',
-          'Donner plus de devoirs',
+          'Le matériel pédagogique utilisé',
+          'Le nombre d’heures de tutorat',
+          'La relation de confiance avec le tuteur',
+          'La difficulté des exercices',
         ],
-        correctIndex: 1,
+        correctIndex: 2,
+      },
+      {
+        q: 'Dans le dialogue socratique, quel est le rôle principal du tuteur ?',
+        options: [
+          'Donner directement la réponse à l’élève',
+          'Expliquer toute la matière avant les exercices',
+          'Corriger immédiatement chaque erreur',
+          'Poser des questions pour stimuler la réflexion de l’élève',
+        ],
+        correctIndex: 3,
+      },
+      {
+        q: 'Dans la méthode de classe inversée utilisée au Centre Reed, quel est le rôle principal de l’élève durant la séance de tutorat ?',
+        options: [
+          'Écouter les explications du tuteur avant de faire les exercices',
+          'Réviser la matière et répondre aux questions du tuteur',
+          'Observer les méthodes du tuteur pour les reproduire plus tard',
+          'Expliquer dans ses propres mots ce qu’il a compris de la matière déjà vue et appliquer les concepts',
+        ],
+        correctIndex: 3,
       },
     ],
-    passMessage: '✅ Excellent ! Passons aux outils.',
+    passMessage: '✅ Bonne compréhension de la méthode Reed.',
     failMessage: '❌ Revois la vidéo et réessaie.',
     onPass: {
       nextStep: 'N2-04',
@@ -189,15 +220,13 @@ module.exports = {
   'N2-04': {
     id: 'N2-04',
     level: 2,
-    title: 'Vidéo 2 — Outils (TutorBird)',
-    description: 'Apprends à utiliser TutorBird, la plateforme de gestion de tes séances.',
+    title: 'Vidéo 2 — Outils et ressources',
+    description: 'Apprends à utiliser nos principaux outils et ressources numériques pour tes séances.',
     fields: [
       { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
-      { name: '📧 Accès', value: 'Tu reçois un email avec ton accès TutorBird après ton appariement' },
-      { name: '📊 Dashboard', value: 'Vue d\'ensemble de tes séances et élèves' },
-      { name: '📅 Calendrier', value: 'Planification de tes séances' },
-      { name: '📚 Ressources', value: 'Matériel pédagogique disponible' },
-      { name: '💰 Paies', value: 'Suivi de tes paiements' },
+      { name: 'TutorBird', value: 'Plateforme de collaboration et gestion avec les élèves et le Centre.' },
+      { name: 'Google Meets', value: 'Application où se déroulent les séances.' },
+      { name: 'Canva/Miro', value: 'Outils gratuits avec tableau blanc et autres ressources.' },
     ],
     buttons: [
       { id: 'btn_N2_v2_done', label: '🎥 Vidéo 2 vue', style: 'Primary' },
@@ -209,44 +238,64 @@ module.exports = {
     id: 'N2-05',
     level: 2,
     type: 'quiz',
-    title: 'Quiz — Outils (TutorBird)',
-    description: 'Valide ta compréhension de TutorBird.',
+    title: 'Quiz — Formation 2 : Outils et plateformes',
+    description: 'Valide ta compréhension des outils et plateformes.',
     questions: [
       {
-        q: 'À quoi sert TutorBird ?',
+        q: 'Dans TutorBird, que devez-vous faire lorsque la séance a eu lieu normalement ?',
         options: [
-          'Discuter avec les élèves',
-          'Gérer les séances, suivis et paies',
-          'Créer des devoirs auto-corrigés',
-          'Postuler aux offres',
+          'Sélectionner Présent dans les présences',
+          'Ajouter un commentaire dans les détails de la leçon',
+          'Modifier le statut dans le calendrier',
+          'Envoyer une confirmation à l’administration',
+        ],
+        correctIndex: 0,
+      },
+      {
+        q: 'Si un élève est absent à une séance, que devez-vous faire dans TutorBird ?',
+        options: [
+          'Marquer l’élève comme absent dans les présences',
+          'Reporter la séance dans le calendrier',
+          'Ne rien modifier, les absences sont gérées par l’administration',
+          'Supprimer la séance',
+        ],
+        correctIndex: 2,
+      },
+      {
+        q: 'Où pouvez-vous consulter les informations concernant votre paie dans TutorBird ?',
+        options: [
+          'Accueil → Présences',
+          'Votre nom (en haut à droite) → Profil → Paie',
+          'Calendrier → Historique des séances',
+          'Ressources en ligne → Votre dossier',
         ],
         correctIndex: 1,
       },
       {
-        q: 'Quand reçois-tu l\'accès à TutorBird ?',
+        q: 'À quoi sert principalement le chat dans Google Meet durant une séance ?',
         options: [
-          'Dès la fin de N1',
-          'Après avoir été accepté à une offre',
-          'Après 1 mois de tutorat',
-          'Il faut en faire la demande',
+          'Remplacer complètement la communication orale',
+          'Partager des liens ou des informations pendant la séance',
+          'Enregistrer automatiquement la séance',
+          'Vérifier la présence de l’élève',
         ],
         correctIndex: 1,
       },
       {
-        q: 'Où vérifier tes paiements ?',
+        q: 'Lorsque vous utilisez un tableau blanc collaboratif (comme Canva ou Miro), quelle option devez-vous choisir pour permettre à l’élève d’y accéder facilement ?',
         options: [
-          'Google Drive',
-          'Section Paies dans TutorBird',
-          'Message Discord',
-          'Site web Centre Reed',
+          'Partager le tableau en mode lecture seulement',
+          'Envoyer une capture d’écran du tableau',
+          'Choisir l’accès n’importe qui avec le lien et envoyer le lien dans le chat',
+          'Télécharger le tableau en PDF et l’envoyer à l’élève',
         ],
-        correctIndex: 1,
+        correctIndex: 2,
       },
     ],
-    passMessage: '✅ Parfait ! Passons aux séances.',
+    passMessage: '✅ Parfait ! Passons à la Séance Découverte.',
     failMessage: '❌ Revois la vidéo et réessaie.',
     onPass: {
-      nextStep: 'N2-06', // Vidéo Séance Découverte
+      nextStep: 'N2-06',
     },
     onFail: {
       retryStep: 'N2-04',
@@ -256,14 +305,14 @@ module.exports = {
   'N2-06': {
     id: 'N2-06',
     level: 2,
-    title: 'Vidéo 3 — Séance Découverte (Première séance)',
+    title: 'Vidéo 3 — Séance Découverte (première séance)',
     description: 'Apprends à préparer et animer ta toute première séance avec ton élève.',
     fields: [
       { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
-      { name: '📂 Panier de l\'élève', value: 'Accès au Drive contenant les documents de l\'élève (notes, devoirs, etc.)' },
-      { name: '📋 Fiche de Levin', value: 'Outil d\'évaluation du style et des forces d\'apprentissage de l\'élève' },
-      { name: '🎯 Évaluation initiale', value: 'Identifier les besoins et le niveau actuel de l\'élève' },
-      { name: '🔗 Démarrer', value: 'Créer le lien avec l\'élève et établir un climat de confiance' },
+      { name: 'Document Séance Découverte', value: 'Guide principal pour structurer la première rencontre avec l’élève.' },
+      { name: 'Tableau des ressources', value: 'Repère les outils et documents utiles à préparer avant la séance.' },
+      { name: 'Outil E-Reed', value: 'Mesure les techniques d’étude et les fonctions exécutives de l’élève.' },
+      { name: 'Rétroaction - Séance Découverte', value: 'Permet de transmettre les observations importantes après la première séance.' },
     ],
     buttons: [
       { id: 'btn_N2_v3_done', label: '🎥 Vidéo 3 vue', style: 'Primary' },
@@ -275,44 +324,64 @@ module.exports = {
     id: 'N2-07',
     level: 2,
     type: 'quiz',
-    title: 'Quiz — Séance Découverte',
-    description: 'Vérifie ta compréhension de la préparation de la première séance.',
+    title: 'Quiz — Formation 3 : Séance Découverte',
+    description: 'Valide ta compréhension de la première séance.',
     questions: [
       {
-        q: 'Avant la première séance, tu dois consulter :',
+        q: 'Quel est l’un des principaux objectifs de la séance découverte ?',
         options: [
-          'Uniquement l\'email de confirmation',
-          'Le panier de l\'élève et la fiche de Levin',
-          'Les notes de l\'ancien tuteur',
-          'Le bulletin de l\'école',
+          'Compléter tous les devoirs de l’élève',
+          'Établir un premier lien de contact avec l’élève',
+          'Enseigner un nouveau chapitre',
+          'Donner un examen diagnostique',
         ],
         correctIndex: 1,
       },
       {
-        q: 'La fiche de Levin sert à :',
+        q: 'Quelle est la durée approximative d’une séance découverte ?',
         options: [
-          'Calculer les notes de l\'élève',
-          'Évaluer le style et les forces d\'apprentissage',
-          'Planifier les vacances',
-          'Corriger les exercices',
+          '30 minutes pour tous',
+          '1 heure pour primaire et 1h30 pour secondaire',
+          '2 heures pour tous',
+          '45 minutes seulement',
         ],
         correctIndex: 1,
       },
       {
-        q: 'L\'objectif principal de la séance découverte est de :',
+        q: 'Quel document sert de guide pour structurer la première rencontre avec l’élève ?',
         options: [
-          'Finir tous les devoirs en retard',
-          'Créer le lien et évaluer les besoins de l\'élève',
-          'Enseigner toute la matière manquée',
-          'Parler uniquement avec le parent',
+          'Le document Séance Découverte',
+          'Le dossier Programme',
+          'Le rapport Rétroaction',
+          'Le dossier Matériel didactique',
         ],
-        correctIndex: 1,
+        correctIndex: 0,
+      },
+      {
+        q: 'L’outil E-Reed sert principalement à :',
+        options: [
+          'Évaluer les devoirs de mathématiques',
+          'Corriger les examens',
+          'Mesurer les techniques d’étude et les fonctions exécutives',
+          'Créer le programme de tutorat',
+        ],
+        correctIndex: 2,
+      },
+      {
+        q: 'Durant la séance découverte, que devrait prioriser le tuteur après l’utilisation des outils ?',
+        options: [
+          'Enseigner une nouvelle matière',
+          'Faire un résumé théorique',
+          'Donner un test écrit',
+          'Évaluer les capacités académiques à travers les devoirs',
+        ],
+        correctIndex: 3,
       },
     ],
     passMessage: '✅ Excellent ! Passons aux séances récurrentes.',
     failMessage: '❌ Revois la vidéo et réessaie.',
     onPass: {
-      nextStep: 'N2-08', // Vidéo Séances Récurrentes
+      nextStep: 'N2-08',
     },
     onFail: {
       retryStep: 'N2-06',
@@ -326,12 +395,10 @@ module.exports = {
     description: 'Découvre comment structurer tes séances régulières après la séance découverte.',
     fields: [
       { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
-      { name: '✅ Présence', value: 'Confirmer la présence de l\'élève et noter dans TutorBird' },
-      { name: '🔄 Rappel', value: 'Revoir la séance précédente et faire le lien' },
-      { name: '📊 Mise à jour élève', value: 'Demander comment s\'est passée la semaine (école, devoirs, examens)' },
-      { name: '📚 Adapter', value: 'Alterner entre théorie et exercices selon les besoins' },
-      { name: '🎓 Teach-back', value: 'Faire expliquer les concepts par l\'élève pour valider la compréhension' },
-      { name: '💬 Récap + Feedback', value: 'Résumer la séance et noter le feedback dans TutorBird' },
+      { name: 'Dossier Programme', value: 'Définit les objectifs et les besoins de l’élève pour les prochaines séances.' },
+      { name: 'Dossier Rétroaction', value: 'Centralise les retours utiles au suivi de l’élève.' },
+      { name: 'Dossier Matériel didactique Reed', value: 'Regroupe le matériel pédagogique et les fiches de stratégies Reed.' },
+      { name: 'Compte-rendu', value: 'Structure la trace de séance, notamment avec la méthode 5P et 5D.' },
     ],
     buttons: [
       { id: 'btn_N2_v4_done', label: '🎥 Vidéo 4 vue', style: 'Primary' },
@@ -343,41 +410,61 @@ module.exports = {
     id: 'N2-09',
     level: 2,
     type: 'quiz',
-    title: 'Quiz — Séances Récurrentes',
-    description: 'Valide ta compréhension du déroulement des séances.',
+    title: 'Quiz — Formation 4 : Séances récurrentes',
+    description: 'Valide ta compréhension des séances récurrentes.',
     questions: [
       {
-        q: 'Au début de chaque séance, tu dois :',
+        q: 'Quand les séances récurrentes commencent-elles généralement ?',
         options: [
-          'Commencer directement les exercices',
-          'Confirmer la présence et faire un rappel de la séance précédente',
-          'Parler uniquement de la nouvelle matière',
-          'Donner un examen surprise',
+          'Avant la séance découverte',
+          'Après la séance découverte',
+          'Après 5 séances',
+          'Après un examen',
         ],
         correctIndex: 1,
       },
       {
-        q: 'Le "teach-back" consiste à :',
+        q: 'Dans les séances récurrentes, à quoi sert principalement le document Programme contenu dans le dossier Programme ?',
         options: [
-          'Répéter la matière plusieurs fois',
-          'Faire expliquer les concepts par l\'élève',
-          'Donner des devoirs supplémentaires',
-          'Regarder des vidéos YouTube',
+          'À établir les objectifs et les besoins de l’élève pour les 10 prochaines séances',
+          'À conserver les devoirs complétés par l’élève',
+          'À noter les commentaires des parents',
+          'À enregistrer les horaires des séances',
         ],
-        correctIndex: 1,
+        correctIndex: 0,
       },
       {
-        q: 'En fin de séance, tu dois :',
+        q: 'Le dossier Rétroaction est principalement utilisé par :',
         options: [
-          'Partir immédiatement',
-          'Faire un récap et noter le feedback dans TutorBird',
-          'Attendre que le parent arrive',
-          'Donner un examen',
+          'Les élèves',
+          'Les parents',
+          'Les administrateurs',
+          'Les tuteurs',
         ],
-        correctIndex: 1,
+        correctIndex: 2,
+      },
+      {
+        q: 'Que contient le dossier Matériel didactique Reed ?',
+        options: [
+          'Les notes scolaires de l’élève',
+          'Les factures des séances',
+          'Les exercices d’examens',
+          'Le matériel pédagogique et les fiches de stratégies',
+        ],
+        correctIndex: 3,
+      },
+      {
+        q: 'Que signifie la méthode 5P et 5D dans le compte-rendu des séances ?',
+        options: [
+          'Les cinq progrès et cinq difficultés de l’élève',
+          'Les cinq objectifs et cinq résultats de la séance',
+          'Les questions posées dans les cinq premières et les cinq dernières minutes de la séance',
+          'Les cinq devoirs et cinq exercices supplémentaires',
+        ],
+        correctIndex: 2,
       },
     ],
-    passMessage: '🎉 **Formation complète réussie !**',
+    passMessage: '🎉 Formation terminée !',
     failMessage: '❌ Revois la vidéo et réessaie.',
     onPass: {
       nextStep: 'N2-10',
@@ -391,13 +478,13 @@ module.exports = {
     id: 'N2-10',
     level: 2,
     type: 'completion',
-    title: '🏆 Toutes nos félicitations !',
-    description: 'Tu as terminé l\'intégralité de la formation Centre Reed !',
+    title: '🎓 Formation terminée',
+    description: 'Tu as terminé l’intégralité de la formation Centre Reed.',
     fields: [
-      { name: '✅ Tu as appris', value: '• La méthode pédagogique Centre Reed\n• Utiliser TutorBird\n• Préparer et animer une séance découverte\n• Structurer tes séances récurrentes' },
-      { name: '🎁 Récompense finale', value: 'Tu viens de recevoir le rôle **Tuteur - Niveau 2 (Actif)** !' },
-      { name: '🔓 Accès débloqué', value: 'Tu as maintenant accès aux canaux :\n• **#annonce** - Annonces importantes\n• **#formation** - Formation continue' },
-      { name: '💙 Bienvenue', value: 'Tu fais maintenant officiellement partie de l\'équipe Centre Reed. Bon tutorat !' },
+      { name: '✅ Tu as appris', value: '• La méthode pédagogique Reed\n• Comment utiliser nos principaux outils et ressources numériques\n• Préparer ta Séance Découverte (première séance)\n• Structurer tes séances récurrentes' },
+      { name: '🎁 Récompense finale', value: 'Tu viens de recevoir le rôle **Tuteur - niveau 2** !' },
+      { name: '🔓 Accès débloqué', value: 'Tu as maintenant accès aux canaux :\n• **#ANNONCE**\n• **#FORMATION**' },
+      { name: '💙 Certification', value: 'Tu es maintenant un tuteur certifié au sein du Centre Reed (N2 Actif).' },
     ],
     buttons: [
       { id: 'btn_N2_complete', label: '🎉 Terminer la formation', style: 'Success' },
@@ -405,7 +492,7 @@ module.exports = {
     onSuccess: {
       nextStep: null,
       addRoles: ['tuteurN2'],
-      message: '🎉 **Tu es maintenant Tuteur - Niveau 2 (Actif) !**\n\n🔓 Accès débloqué :\n• <#' + config.channels.annonce + '>\n• <#' + config.channels.formation + '>\n\n**Tu es prêt à enseigner avec toute la rigueur Reed !** 💙\n\nBienvenue dans l\'équipe ! 🎓',
+      message: '🎉 **Formation terminée !**\n\nTu es maintenant **Tuteur - niveau 2**.\n\n🔓 Accès débloqué :\n• <#' + config.channels.annonce + '>\n• <#' + config.channels.formation + '>\n\n**Tu es prêt à enseigner avec la méthode Reed.** 💙',
     },
   },
 };
