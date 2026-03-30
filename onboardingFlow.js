@@ -154,7 +154,7 @@ module.exports = {
     title: 'Vidéo 1 — Méthode Centre Reed',
     description: 'Découvre notre approche pédagogique et notre philosophie au sein du centre.',
     fields: [
-      { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
+      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/_Gz4ULoTCe4)' },
       { name: 'Notre vision', value: 'Comprendre la mission du Centre Reed et la finalité de notre accompagnement.' },
       { name: 'Tuteur exemplaire', value: 'Adopter la posture attendue d\'un tuteur Reed dans sa relation avec l\'élève.' },
       { name: 'Méthodes pédagogiques détaillées', value: 'Explorer les principes qui guident la méthode Reed durant les séances.' },
@@ -239,7 +239,7 @@ module.exports = {
     title: 'Vidéo 2 — Outils et ressources',
     description: 'Apprends à utiliser nos principaux outils et ressources numériques pour tes séances.',
     fields: [
-      { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
+      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/HwMXCejJ3Xg)' },
       { name: 'TutorBird', value: 'Plateforme de collaboration et gestion avec les élèves et le Centre.' },
       { name: 'Google Meets', value: 'Application où se déroulent les séances.' },
       { name: 'Canva/Miro', value: 'Outils gratuits avec tableau blanc et autres ressources.' },
@@ -324,7 +324,7 @@ module.exports = {
     title: 'Vidéo 3 — Séance Découverte (première séance)',
     description: 'Apprends à préparer et animer ta toute première séance avec ton élève.',
     fields: [
-      { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
+      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/VhiRuF2XwPU)' },
       { name: 'Document Séance Découverte', value: 'Guide principal pour structurer la première rencontre avec l’élève.' },
       { name: 'Tableau des ressources', value: 'Repère les outils et documents utiles à préparer avant la séance.' },
       { name: 'Outil E-Reed', value: 'Mesure les techniques d’étude et les fonctions exécutives de l’élève.' },
@@ -410,7 +410,7 @@ module.exports = {
     title: 'Vidéo 4 — Séances Récurrentes',
     description: 'Découvre comment structurer tes séances régulières après la séance découverte.',
     fields: [
-      { name: 'Lien', value: '🎬 *[Vidéo à venir]*' },
+      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/Fn5FZmhQM5Q)' },
       { name: 'Dossier Programme', value: 'Définit les objectifs et les besoins de l’élève pour les prochaines séances.' },
       { name: 'Dossier Rétroaction', value: 'Centralise les retours utiles au suivi de l’élève.' },
       { name: 'Dossier Matériel didactique Reed', value: 'Regroupe le matériel pédagogique et les fiches de stratégies Reed.' },

@@ -147,7 +147,7 @@ Ce que tu vas apprendre :
 **Description :** `Decouvre notre approche pedagogique et notre philosophie au sein du centre.`
 
 **Fields :**
-- `Lien` : `🎬 *[Vidéo à venir]*`
+- `Lien` : `🎬 [Regarder la vidéo](https://youtu.be/_Gz4ULoTCe4)`
 - `Notre vision`
 - `Tuteur exemplaire`
 - `Methodes pedagogiques detaillees`
@@ -202,7 +202,7 @@ Ce que tu vas apprendre :
 **Description :** `Apprends a utiliser nos principaux outils et ressources numeriques pour tes seances.`
 
 **Fields :**
-- `Lien` : `🎬 *[Vidéo à venir]*`
+- `Lien` : `🎬 [Regarder la vidéo](https://youtu.be/HwMXCejJ3Xg)`
 - `TutorBird` : `Plateforme de collaboration et gestion avec les eleves et le Centre`
 - `Google Meets` : `Application ou se deroulent les seances`
 - `Canva/Miro` : `Outils gratuits avec tableau blanc et autres ressources`
@@ -257,7 +257,7 @@ Ce que tu vas apprendre :
 **Description :** `Apprends a preparer et animer ta toute premiere seance avec ton eleve.`
 
 **Fields :**
-- `Lien` : `🎬 *[Vidéo à venir]*`
+- `Lien` : `🎬 [Regarder la vidéo](https://youtu.be/VhiRuF2XwPU)`
 - `Document Seance Decouverte`
 - `Tableau des ressources`
 - `Outil E-Reed`
@@ -313,7 +313,7 @@ Ce que tu vas apprendre :
 **Description :** `Decouvre comment structurer tes seances regulieres apres la seance decouverte.`
 
 **Fields :**
-- `Lien` : `🎬 *[Vidéo à venir]*`
+- `Lien` : `🎬 [Regarder la vidéo](https://youtu.be/Fn5FZmhQM5Q)`
 - `Dossier Programme`
 - `Dossier Retroaction`
 - `Dossier Materiel didactique Reed`
