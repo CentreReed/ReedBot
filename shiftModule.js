@@ -320,18 +320,32 @@ async function handleShiftChatCommand(interaction) {
     
     let thread;
 
-    if (msg.hasThread) {
-      thread = msg.thread;
+    if (shift.threadId) {
+      thread = await interaction.guild.channels.fetch(shift.threadId);
+
+      if (thread.archived) {
+        await thread.setArchived(false);
+      }
 
       await thread.setName(`✅ Assigné • ${member.displayName}`);
     } else {
-      thread = await msg.startThread({
+      thread = await ch.threads.create({
         name: `✅ Assigné • ${member.displayName}`,
         autoArchiveDuration: 1440,
+        type: ChannelType.PrivateThread,
+        invitable: false,
+        reason: `Assignation du contrat ${shiftId}`,
       });
+
+      await setShiftThreadId(
+        interaction.guildId,
+        shiftId,
+        thread.id
+      );
     }
-    
+
     await thread.members.add(user.id);
+    
     await thread.send(
       `🎉 **Contrat assigné à <@${user.id}>**\n\n` +
       `📋 **${shift.title}**\n` +
