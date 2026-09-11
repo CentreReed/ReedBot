@@ -2,6 +2,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  ChannelType,
   EmbedBuilder,
   SlashCommandBuilder,
   PermissionFlagsBits,
@@ -13,6 +14,7 @@ const {
   createShift,
   getShift,
   setShiftStatus,
+  setShiftThreadId,
   applyToShift,
   withdrawFromShift,
   listApplicants,
@@ -318,18 +320,32 @@ async function handleShiftChatCommand(interaction) {
     
     let thread;
 
-    if (msg.hasThread) {
-      thread = msg.thread;
+    if (shift.threadId) {
+      thread = await interaction.guild.channels.fetch(shift.threadId);
+
+      if (thread.archived) {
+        await thread.setArchived(false);
+      }
 
       await thread.setName(`✅ Assigné • ${member.displayName}`);
     } else {
-      thread = await msg.startThread({
+      thread = await ch.threads.create({
         name: `✅ Assigné • ${member.displayName}`,
         autoArchiveDuration: 1440,
+        type: ChannelType.PrivateThread,
+        invitable: false,
+        reason: `Assignation du contrat ${shiftId}`,
       });
+
+      await setShiftThreadId(
+        interaction.guildId,
+        shiftId,
+        thread.id
+      );
     }
-    
+
     await thread.members.add(user.id);
+    
     await thread.send(
       `🎉 **Contrat assigné à <@${user.id}>**\n\n` +
       `📋 **${shift.title}**\n` +
@@ -358,6 +374,32 @@ async function handleShiftChatCommand(interaction) {
         flags: [MessageFlags.Ephemeral],
       });
       return true;
+    }
+
+    const activeAssignments = await listActiveAssignments(
+      interaction.guildId
+    );
+
+    const currentAssignment = activeAssignments.find(
+      assignment => assignment.shiftId === shiftId
+    );
+
+    if (currentAssignment && shift.threadId) {
+      try {
+        const thread = await interaction.guild.channels.fetch(
+          shift.threadId
+        );
+
+        if (thread.archived) {
+          await thread.setArchived(false);
+        }
+
+        await thread.members.remove(currentAssignment.userId);
+      } catch (error) {
+        console.log(
+          `ℹ️ Impossible de retirer le tuteur du thread privé: ${error.message}`
+        );
+      }
     }
 
     await unassignShift(interaction.guildId, shiftId);
