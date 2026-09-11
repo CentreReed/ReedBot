@@ -315,11 +315,16 @@ async function handleShiftChatCommand(interaction) {
       });
     }
     
-    const thread = await msg.startThread({
-      name: `✅ Assigné • ${member.displayName}`,
-      autoArchiveDuration: 1440, // 24 hours
-    });
+    let thread;
 
+    if (msg.hasThread) {
+      thread = msg.thread;
+    } else {
+      thread = await msg.startThread({
+        name: `✅ Assigné • ${member.displayName}`,
+        autoArchiveDuration: 1440,
+      });
+    }
     await thread.members.add(user.id);
     await thread.send(
       `🎉 **Contrat assigné à <@${user.id}>**\n\n` +
