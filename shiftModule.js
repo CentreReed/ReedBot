@@ -320,12 +320,15 @@ async function handleShiftChatCommand(interaction) {
 
     if (msg.hasThread) {
       thread = msg.thread;
+
+      await thread.setName(`✅ Assigné • ${member.displayName}`);
     } else {
       thread = await msg.startThread({
         name: `✅ Assigné • ${member.displayName}`,
         autoArchiveDuration: 1440,
       });
     }
+    
     await thread.members.add(user.id);
     await thread.send(
       `🎉 **Contrat assigné à <@${user.id}>**\n\n` +
