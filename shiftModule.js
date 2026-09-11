@@ -18,6 +18,7 @@ const {
   listApplicants,
   assignShift,
   unassignShift,
+  listMyAssignments,
   listShiftsByCreator,
   listActiveAssignments,
 } = require('./shiftStore');
@@ -586,7 +587,16 @@ async function handleShiftButton(interaction) {
       });
     }
 
-    if (shift.assignedTo === interaction.user.id) {
+    const activeAssignments = await listMyAssignments(
+      interaction.guildId,
+      interaction.user.id
+    );
+
+    const isAssignedToThisShift = activeAssignments.some(
+      assignment => assignment.shiftId === shiftId
+    );
+
+    if (isAssignedToThisShift) {
       return interaction.reply({
         content:
           '⚠️ Tu es actuellement assigné à ce contrat. ' +
