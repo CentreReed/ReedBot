@@ -14,6 +14,7 @@ const {
   createShift,
   getShift,
   setShiftStatus,
+  setShiftThreadId,
   applyToShift,
   withdrawFromShift,
   listApplicants,
