@@ -187,7 +187,7 @@ async function handleShiftChatCommand(interaction) {
     const channel = await interaction.guild.channels.fetch(config.channels.contrats);
     
     const embed = new EmbedBuilder()
-      .setColor('#FFA500')
+      .setColor('#2ECC71')
       .setTitle(`📣 ${title}`)
       .setDescription(description)
       .addFields(
@@ -303,6 +303,17 @@ async function handleShiftChatCommand(interaction) {
     // Create private thread
     const ch = await interaction.guild.channels.fetch(shift.channelId);
     const msg = await ch.messages.fetch(shift.messageId);
+
+    // Mettre à jour visuellement l'offre : assignée
+    if (msg.embeds.length > 0) {
+      const assignedEmbed = EmbedBuilder.from(msg.embeds[0])
+        .setColor('#E74C3C')
+        .setFooter({ text: `ID: ${shiftId} • Statut: Assigné` });
+
+      await msg.edit({
+        embeds: [assignedEmbed],
+      });
+    }
     
     const thread = await msg.startThread({
       name: `✅ Assigné • ${member.displayName}`,
@@ -329,15 +340,42 @@ async function handleShiftChatCommand(interaction) {
   // /shift unassign
   if (sub === 'unassign') {
     const shiftId = interaction.options.getString('shift_id');
+
+    const shift = await getShift(interaction.guildId, shiftId);
+
+    if (!shift) {
+      await interaction.reply({
+        content: '❌ Ce contrat n’existe pas.',
+        flags: [MessageFlags.Ephemeral],
+      });
+      return true;
+    }
+
     await unassignShift(interaction.guildId, shiftId);
-    
+
+    // Retrouver la carte originale
+    const ch = await interaction.guild.channels.fetch(shift.channelId);
+    const msg = await ch.messages.fetch(shift.messageId);
+
+    // Remettre visuellement l'offre en mode ouvert
+    if (msg.embeds.length > 0) {
+      const openEmbed = EmbedBuilder.from(msg.embeds[0])
+        .setColor('#2ECC71')
+        .setFooter({ text: `ID: ${shiftId} • Statut: Ouvert` });
+
+      await msg.edit({
+        embeds: [openEmbed],
+      });
+    }
+
     await interaction.reply({
       content: `✅ Attribution retirée. Le contrat \`${shiftId}\` est ré-ouvert.`,
       flags: [MessageFlags.Ephemeral],
     });
+
     return true;
   }
-
+  
   // /shift close
   if (sub === 'close') {
     const shiftId = interaction.options.getString('shift_id');
