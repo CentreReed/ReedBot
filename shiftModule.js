@@ -576,7 +576,30 @@ async function handleShiftButton(interaction) {
   // Withdraw button
   if (WD_REGEX.test(id)) {
     const shiftId = id.match(WD_REGEX)[1];
-    await withdrawFromShift(interaction.guildId, shiftId, interaction.user.id);
+
+    const shift = await getShift(interaction.guildId, shiftId);
+
+    if (!shift) {
+      return interaction.reply({
+        content: '❌ Ce contrat n’existe plus.',
+        flags: [MessageFlags.Ephemeral],
+      });
+    }
+
+    if (shift.assignedTo === interaction.user.id) {
+      return interaction.reply({
+        content:
+          '⚠️ Tu es actuellement assigné à ce contrat. ' +
+          'Si tu n’es plus disponible, contacte le Centre Reed afin que le contrat soit réassigné.',
+        flags: [MessageFlags.Ephemeral],
+      });
+    }
+
+    await withdrawFromShift(
+      interaction.guildId,
+      shiftId,
+      interaction.user.id
+    );
 
     return interaction.reply({
       content: '↩️ Ta candidature a été retirée.',
