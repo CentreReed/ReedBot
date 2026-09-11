@@ -47,6 +47,13 @@ async function setShiftStatus(guildId, shiftId, status) {
 }
 
 /**
+ * Save the private assignment thread ID
+ */
+async function setShiftThreadId(guildId, shiftId, threadId) {
+  await shiftsCol(guildId).doc(shiftId).update({ threadId });
+}
+
+/**
  * Apply to a shift
  */
 async function applyToShift(guildId, shiftId, userId, roleSnapshot) {
@@ -170,6 +177,7 @@ module.exports = {
   createShift,
   getShift,
   setShiftStatus,
+  setShiftThreadId,
   applyToShift,
   withdrawFromShift,
   listApplicants,
@@ -180,4 +188,3 @@ module.exports = {
   listShiftsByCreator,
   listActiveAssignments,
 };
-
