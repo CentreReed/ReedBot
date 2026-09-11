@@ -376,6 +376,32 @@ async function handleShiftChatCommand(interaction) {
       return true;
     }
 
+    const activeAssignments = await listActiveAssignments(
+      interaction.guildId
+    );
+
+    const currentAssignment = activeAssignments.find(
+      assignment => assignment.shiftId === shiftId
+    );
+
+    if (currentAssignment && shift.threadId) {
+      try {
+        const thread = await interaction.guild.channels.fetch(
+          shift.threadId
+        );
+
+        if (thread.archived) {
+          await thread.setArchived(false);
+        }
+
+        await thread.members.remove(currentAssignment.userId);
+      } catch (error) {
+        console.log(
+          `ℹ️ Impossible de retirer le tuteur du thread privé: ${error.message}`
+        );
+      }
+    }
+
     await unassignShift(interaction.guildId, shiftId);
 
     // Retrouver la carte originale
