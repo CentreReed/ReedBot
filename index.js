@@ -31,11 +31,11 @@ client.once('clientReady', async () => {
     const commands = [
       new SlashCommandBuilder()
         .setName('start_onboarding')
-        .setDescription('Démarrer la Formation Niveau 1 (Discord et offres de tutorat)')
+        .setDescription('Démarrer la Formation Niveau 1 (Discord et application)')
         .toJSON(),
       new SlashCommandBuilder()
         .setName('finish_onboarding')
-        .setDescription('Formation complète Reed (4 vidéos, 4 quiz) - Requiert rôle niveau 1A')
+        .setDescription('Formation complète Reed (4 vidéos, 4 quiz) - Requiert rôle apparié')
         .toJSON(),
       ...shiftCommands,
       ...adminCommands,
@@ -83,13 +83,13 @@ client.on('interactionCreate', async (interaction) => {
       .setColor('#FFA500')
       .setTitle('🎓 Formation Niveau 1 - Centre Reed')
       .setDescription(
-        'Bienvenue ! Cette formation te permettra d\'apprendre à utiliser Discord et à savoir comment postuler aux offres de tutorat.\n\n' +
+        'Bienvenue ! Cette formation te permettra d\'apprendre à utiliser Discord et à savoir comment appliquer aux offres de tutorat.\n\n' +
         '**Ce que tu vas accomplir :**\n' +
-        '• 🎥 Vidéo : Discord et savoir comment postuler\n' +
+        '• 📹 Vidéo : Discord et savoir comment appliquer\n' +
         '• 📝 Quiz de validation\n\n' +
         '**Résultat :**\n' +
         '✅ Rôle **Tuteur - niveau 1**\n' +
-        '🔓 Accès aux canaux **#offres et #annonces**'
+        '🔓 Accès au canal #OFFRES pour appliquer'
       )
       .addFields(
         { name: '⏱️ Durée estimée', value: '5-10 minutes' }
@@ -136,8 +136,8 @@ client.on('interactionCreate', async (interaction) => {
         content: '❌ **Tu ne peux pas encore accéder à cette formation.**\n\n' +
           'Pour faire la formation complète, tu dois :\n' +
           '1️⃣ Compléter la Formation Niveau 1 (`/start_onboarding`)\n' +
-          '2️⃣ Postuler à une offre dans le canal #offres\n' +
-          '3️⃣ Être assigné à un premier élève et recevoir le rôle **Tuteur - niveau 1A**\n\n' +
+          '2️⃣ Appliquer à une offre dans le canal #OFFRES\n' +
+          '3️⃣ Être accepté et recevoir le rôle **Tuteur - niveau 1A**\n\n' +
           '**Reviens ensuite pour terminer ta formation !** 🎓',
         flags: [MessageFlags.Ephemeral],
       });
@@ -148,23 +148,22 @@ client.on('interactionCreate', async (interaction) => {
       .setColor('#00FF00')
       .setTitle('🎉 Formation Complète - Centre Reed')
       .setDescription(
-        'Félicitations pour ton premier mandat ! 🎉\n\n' +
-        'Maintenant qu’un premier élève t’a été assigné, il est temps de compléter le reste de ta formation avant ta première séance.\n\n' +
+        'Félicitations pour ton appariement ! 🎉\n\n' +
+        'Cette formation complète te préparera à devenir un tuteur certifié au sein du Centre Reed.\n\n' +
         '**Ce que tu vas apprendre :**\n' +
-        '• La **Méthode Reed** et notre approche du tutorat\n' +
-        '• Les principaux **outils et ressources** à ta disposition\n' +
-        '• Comment réaliser une **Séance Découverte**\n' +
-        '• Comment préparer et réaliser les **Séances récurrentes**\n\n' +
+        '• La Méthode Reed\n' +
+        '• Utiliser nos principaux outils et ressources numériques\n' +
+        '• Comment se réalisent la Séance Découverte et les Séances récurrentes\n\n' +
         '**Format :**\n' +
-        '• 🎥 4 vidéos : Méthode Reed, Outils et ressources, Séance Découverte et Séances récurrentes\n' +
+        '• 📹 4 vidéos : Méthode, Outils et ressources, Séance Découverte, Séances récurrentes\n' +
         '• 📝 4 quiz de validation\n\n' +
         '**Résultat :**\n' +
         '✅ Rôle **Tuteur - niveau 2**\n' +
-        '🔓 Accès à **#formations-continues**'
+        '🔓 Accès à **#OFFRES**, **#ANNONCES** et à la section **Formation continue**'
       )
       .addFields(
         { name: '⏱️ Durée estimée', value: '1h20' },
-        { name: '🎯 Objectif', value: 'Être prêt à accompagner ton premier élève selon les méthodes et le fonctionnement du Centre Reed.' }
+        { name: '🎯 Objectif', value: 'Devenir un tuteur certifié au sein du Centre Reed (N2 Actif)' }
       )
       .setFooter({ text: 'Centre Reed - Formation N2' })
       .setTimestamp();
