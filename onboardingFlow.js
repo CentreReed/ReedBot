@@ -1,6 +1,23 @@
 // Définition complète du flow d'onboarding Centre Reed
 const config = require('./config');
 
+// Conservé depuis la version originale pour ne pas modifier la structure d'initialisation.
+const n2AccessLabels = ['• **#OFFRES**'];
+if (config.channels.annonce) {
+  n2AccessLabels.push('• **#ANNONCES**');
+}
+if (config.channels.formation) {
+  n2AccessLabels.push('• **Formation continue**');
+}
+
+const n2AccessMentions = [`• <#${config.channels.contrats}>`];
+if (config.channels.annonce) {
+  n2AccessMentions.push(`• <#${config.channels.annonce}>`);
+}
+if (config.channels.formation) {
+  n2AccessMentions.push(`• <#${config.channels.formation}>`);
+}
+
 module.exports = {
   // ============================================
   // NIVEAU 1 - Discord et offres de tutorat
