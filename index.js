@@ -83,13 +83,13 @@ client.on('interactionCreate', async (interaction) => {
       .setColor('#FFA500')
       .setTitle('🎓 Formation Niveau 1 - Centre Reed')
       .setDescription(
-        'Bienvenue ! Cette formation te permettra d\'apprendre à utiliser Discord et à savoir comment appliquer aux offres de tutorat.\n\n' +
+        'Bienvenue ! Cette formation te permettra d\'apprendre à utiliser Discord et à savoir comment postuler aux offres de tutorat.\n\n' +
         '**Ce que tu vas accomplir :**\n' +
-        '• 📹 Vidéo : Discord et savoir comment appliquer\n' +
+        '• 🎥 Vidéo : Discord et savoir comment postuler\n' +
         '• 📝 Quiz de validation\n\n' +
         '**Résultat :**\n' +
         '✅ Rôle **Tuteur - niveau 1**\n' +
-        '🔓 Accès au canal #OFFRES pour appliquer'
+        '🔓 Accès aux canaux **#offres et #annonces**'
       )
       .addFields(
         { name: '⏱️ Durée estimée', value: '5-10 minutes' }
