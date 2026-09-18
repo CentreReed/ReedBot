@@ -134,7 +134,7 @@ module.exports = {
       { name: '✅ Ce que tu as appris', value: '• Naviguer dans les différents espaces du serveur Discord\n• Comprendre où communiquer selon la situation\n• Consulter les offres de tutorat et comprendre leur statut\n• Postuler à une offre et retirer ta candidature au besoin\n• Comprendre ce qui se passe lorsqu’un élève t’est assigné' },
       { name: '🎁 Récompense', value: 'Tu viens de recevoir le rôle **Tuteur - niveau 1** !' },
       { name: '🔓 Accès débloqué', value: 'Tu peux maintenant accéder aux canaux **#offres et #annonces** et postuler aux mandats disponibles.' },
-      { name: '➡️ Prochaine étape', value: 'Lorsqu’un premier élève te sera assigné, tu recevras le rôle **Tuteur - niveau 1A**.\n\nTu devras alors confirmer le **créneau récurrent choisi** dans le post de ton nouvel élève.\n\nEnsuite, retourne dans **#onboarding** et utilise la commande `/finish_onboarding` pour compléter le reste de ta formation avant ta première séance.' },
+      { name: '➡️ Prochaine étape', value: 'Lorsqu’un premier élève te sera assigné, tu recevras le rôle **Tuteur - niveau 1A**.\n\n📅 **Dès l’assignation, confirme ton horaire :** rends-toi dans **ton espace personnel [ton nom]**, puis ouvre le **post au nom de ton nouvel élève**. Inscris-y le **créneau récurrent que tu choisis parmi les disponibilités indiquées dans l’offre**.\n\nUne fois ton créneau confirmé, retourne dans **#onboarding** et utilise la commande `/finish_onboarding` pour compléter le reste de ta formation avant ta première séance.' },
     ],
     buttons: [
       { id: 'btn_N1_complete', label: '🎓 Terminer', style: 'Success' },
@@ -142,7 +142,7 @@ module.exports = {
     onSuccess: {
       nextStep: null,
       addRoles: ['tuteurN1'],
-      message: '🎉 Tu es maintenant **Tuteur - niveau 1** !\n\n🔓 **Accès débloqué :** **#offres et #annonces**\n\n**Prochaine étape :** Consulte les offres disponibles et postule aux mandats qui t’intéressent.\n\nLorsqu’un premier élève te sera assigné, retourne dans **#onboarding** et utilise `/finish_onboarding` pour poursuivre ta formation. 💙',
+      message: '🎉 Tu es maintenant **Tuteur - niveau 1** !\n\n🔓 **Accès débloqué :** **#offres et #annonces**\n\n**Prochaine étape :** Consulte les offres disponibles et postule aux mandats qui t’intéressent.\n\n📅 **Lorsqu’un élève t’est assigné :** rends-toi immédiatement dans **ton espace personnel [ton nom]**, puis dans le **post au nom de l’élève**, et inscris le **créneau récurrent que tu choisis parmi les disponibilités indiquées dans l’offre**.\n\nUne fois ton créneau confirmé, retourne dans **#onboarding** et utilise `/finish_onboarding` pour poursuivre ta formation. 💙',
     },
   },
 
