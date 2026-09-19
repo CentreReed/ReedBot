@@ -74,7 +74,7 @@ const shiftCommands = [
         .addStringOption(o =>
           o.setName('start_date').setDescription('Date de début (ex: 2025-11-15)').setRequired(true)
         )
-        .addIntegerOption(o => o.setName('duration_hours').setDescription('Durée en HEURES par semaine').setRequired(true))
+        .addNumberOption(o => o.setName('duration_hours').setDescription('Durée en HEURES par semaine (ex: 1.5)').setRequired(true))
         .addStringOption(o => o.setName('availabilities').setDescription('Dispos élève (ex: Lun 18-22h, Mar 18-22h)').setRequired(true))
         .addStringOption(o => o.setName('description').setDescription('Description détaillée').setRequired(true))
         .addStringOption(o => o.setName('subjects').setDescription('Matières (séparées par virgule)').setRequired(false))
@@ -177,7 +177,7 @@ async function handleShiftChatCommand(interaction) {
     await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
     const title = interaction.options.getString('title');
     const startDate = interaction.options.getString('start_date');
-    const durationHours = interaction.options.getInteger('duration_hours');
+    const durationHours = interaction.options.getNumber('duration_hours');
     const availabilities = interaction.options.getString('availabilities');
     const description = interaction.options.getString('description');
     const subjects = (interaction.options.getString('subjects') || '')
