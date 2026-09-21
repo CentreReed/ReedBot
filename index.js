@@ -92,7 +92,7 @@ client.on('interactionCreate', async (interaction) => {
         '🔓 Accès aux canaux **#offres et #annonces**'
       )
       .addFields(
-        { name: '⏱️ Durée estimée', value: '5-10 minutes' }
+        { name: '⏱️ Durée estimée', value: '20 minutes' }
       )
       .setFooter({ text: 'Centre Reed - Formation N1' })
       .setTimestamp();
@@ -162,7 +162,7 @@ client.on('interactionCreate', async (interaction) => {
         '🔓 Accès à **#OFFRES**, **#ANNONCES** et à la section **Formation continue**'
       )
       .addFields(
-        { name: '⏱️ Durée estimée', value: '1h20' },
+        { name: '⏱️ Durée estimée', value: '3h00' },
         { name: '🎯 Objectif', value: 'Devenir un tuteur certifié au sein du Centre Reed (N2 Actif)' }
       )
       .setFooter({ text: 'Centre Reed - Formation N2' })
