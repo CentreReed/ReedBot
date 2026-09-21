@@ -31,7 +31,7 @@ module.exports = {
     title: '🎯 Bienvenue au Centre Reed - Formation Niveau 1',
     description: 'Bienvenue ! Tu vas maintenant apprendre à utiliser **Discord**, notre espace de communication interne avec les tuteurs, et à comprendre le fonctionnement des **offres de tutorat**.\n\n**Ce que tu vas accomplir :**\n• Découvrir les différents espaces du serveur Discord\n• Comprendre où communiquer selon la situation\n• Comprendre le fonctionnement des offres et savoir comment postuler\n• Voir ce qui se passe lorsqu’un élève t’est assigné\n• Débloquer le rôle **Tuteur - niveau 1**',
     fields: [
-      { name: '⏱️ Durée', value: '5-10 minutes' },
+      { name: '⏱️ Durée', value: '20 minutes' },
       { name: '🎯 Objectif', value: 'Obtenir le rôle **Tuteur - niveau 1** et accéder aux canaux **#offres et #annonces**' },
     ],
     buttons: [
@@ -52,7 +52,7 @@ module.exports = {
       { name: '✅ Postuler à une offre', value: 'Découvre comment soumettre ta candidature et comment la retirer si tu n’es finalement plus disponible.' },
       { name: '🎓 Lorsqu’un élève t’est assigné', value: 'Découvre ce qui se passe dans Discord lorsqu’un mandat t’est attribué et comment confirmer le créneau choisi.' },
       { name: '🚀 Poursuivre ton onboarding', value: 'Découvre comment reprendre ton onboarding lorsque ton premier élève t’est assigné.' },
-      { name: '⏱️ Durée', value: '5-10 minutes' },
+      { name: '⏱️ Durée', value: '20 minutes' },
     ],
     buttons: [
       { id: 'btn_N1_video_done', label: '🎥 Vidéo complétée', style: 'Primary' },
@@ -158,7 +158,7 @@ module.exports = {
     title: '🎉 Félicitations pour ton premier mandat !',
     description: 'Bravo ! Un premier élève t’a été assigné et tu es maintenant **Tuteur - niveau 1A**.\n\nIl est maintenant temps de compléter le reste de ta formation afin d’être prêt pour ta première séance.\n\n**Ce que tu vas apprendre :**\n• La **Méthode Reed** et notre approche du tutorat\n• Utiliser nos principaux **outils et ressources**\n• Comment réaliser une **Séance Découverte**\n• Comment préparer et réaliser les **Séances récurrentes**',
     fields: [
-      { name: '⏱️ Durée', value: '1h20' },
+      { name: '⏱️ Durée', value: '3h00' },
       { name: '🎯 Objectif', value: 'Être prêt à accompagner ton premier élève selon les méthodes et le fonctionnement du Centre Reed.' },
     ],
     buttons: [
