@@ -46,7 +46,7 @@ module.exports = {
     title: '🎥 Vidéo 1 — Discord : fonctionnement et offres de tutorat',
     description: 'Découvre le fonctionnement du serveur Discord du Centre Reed et le parcours d’un tuteur, de la consultation d’une offre jusqu’à l’assignation d’un élève.',
     fields: [
-      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/ham62aTgKw0)' },
+      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/zuhukLgaRL4)' },
       { name: '🖥️ Le serveur Discord', value: 'Découvre les différents espaces du serveur et apprends où communiquer selon la situation.' },
       { name: '📋 Les offres de tutorat', value: 'Apprends à lire une offre, à reconnaître son statut et à vérifier les informations importantes avant de postuler.' },
       { name: '✅ Postuler à une offre', value: 'Découvre comment soumettre ta candidature et comment la retirer si tu n’es finalement plus disponible.' },
@@ -229,7 +229,7 @@ module.exports = {
     title: '🎥 Vidéo 2 — Outils et ressources',
     description: 'Découvre les principaux outils utilisés au Centre Reed et apprends **où faire quoi** dans ton travail de tuteur.',
     fields: [
-      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/HwMXCejJ3Xg)' },
+      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/vBi6zPnpL8Q)' },
       { name: 'TutorBird', value: 'Consulte tes séances, accède aux liens Google Meet, prends les présences et retrouve les informations et ressources liées à tes élèves.' },
       { name: 'WhatsApp', value: 'Communique avec les parents, notamment pour les annulations et pour convenir des reprises de séance.' },
       { name: 'Google Meet', value: 'Plateforme utilisée pour réaliser les séances de tutorat en ligne.' },
@@ -286,7 +286,7 @@ module.exports = {
     title: '🎥 Vidéo 3 — Séance Découverte',
     description: 'Apprends à préparer et réaliser la **première séance avec ton élève**, afin de faire connaissance, comprendre ses besoins et obtenir un premier portrait de son niveau scolaire.',
     fields: [
-      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/VhiRuF2XwPU)' },
+      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/pMHPuDk5EJs)' },
       { name: 'Séance Découverte', value: 'Découvre les étapes à suivre pour structurer et réaliser cette première rencontre avec l’élève.' },
       { name: 'Tableau des ressources', value: 'Présente à l’élève les ressources qui seront à sa disposition et assure-toi qu’il sait comment y accéder.' },
       { name: 'Programme de l’élève', value: 'Établis les principaux objectifs de l’accompagnement à partir des besoins observés. Le Programme pourra ensuite évoluer au fil des séances.' },
@@ -344,7 +344,7 @@ module.exports = {
     title: '🎥 Vidéo 4 — Séances récurrentes',
     description: 'Découvre comment préparer, structurer et assurer le suivi de tes **séances récurrentes** après la Séance Découverte.',
     fields: [
-      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/Fn5FZmhQM5Q)' },
+      { name: 'Lien', value: '🎬 [Regarder la vidéo](https://youtu.be/VU62xygq9mc)' },
       { name: 'Programme de l’élève', value: 'Utilise le Programme pour guider l’accompagnement et fais-le évoluer au fil des séances selon les besoins et la progression de l’élève.' },
       { name: 'Panier de l’élève', value: 'Consulte les informations et documents utiles à son accompagnement, comme son bulletin, son plan d’intervention ou les informations transmises par le parent.' },
       { name: 'Matériel didactique', value: 'Utilise les ressources disponibles pour travailler les notions et répondre aux besoins de l’élève pendant les séances.' },
