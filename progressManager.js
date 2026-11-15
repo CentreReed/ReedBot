@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const PROGRESS_FILE = path.join(__dirname, 'progress.json');
+// A Web Service can mount a persistent Render disk and set this path explicitly.
+const PROGRESS_FILE = process.env.PROGRESS_FILE || path.join(__dirname, 'progress.json');
 
 class ProgressManager {
   constructor() {
@@ -23,11 +24,10 @@ class ProgressManager {
   }
 
   saveProgress() {
-    try {
-      fs.writeFileSync(PROGRESS_FILE, JSON.stringify(this.progress, null, 2));
-    } catch (error) {
-      console.error('Error saving progress:', error);
-    }
+    fs.mkdirSync(path.dirname(PROGRESS_FILE), { recursive: true });
+    const temporary = `${PROGRESS_FILE}.${process.pid}.tmp`;
+    fs.writeFileSync(temporary, JSON.stringify(this.progress, null, 2), { mode: 0o600 });
+    fs.renameSync(temporary, PROGRESS_FILE);
   }
 
   getUserProgress(userId) {
@@ -81,4 +81,5 @@ class ProgressManager {
 }
 
 module.exports = new ProgressManager();
+
 

@@ -1,50 +1,9 @@
-const {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ChannelType,
-  EmbedBuilder,
-  SlashCommandBuilder,
-  PermissionFlagsBits,
-  MessageFlags,
-} = require('discord.js');
-const { randomUUID } = require('crypto');
+const shiftActions = require('./automation/shiftActions');
+const { EmbedBuilder, SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const config = require('./config');
-const {
-  createShift,
-  getShift,
-  setShiftStatus,
-  setShiftThreadId,
-  applyToShift,
-  withdrawFromShift,
-  listApplicants,
-  assignShift,
-  unassignShift,
-  listMyAssignments,
-  listShiftsByCreator,
-  listActiveAssignments,
-} = require('./shiftStore');
+const { listApplicants, listShiftsByCreator, listActiveAssignments } = require('./shiftStore');
 
-// Button ID helpers
-const BTN = {
-  APPLY: (id) => `shift_apply_${id}`,
-  WD: (id) => `shift_withdraw_${id}`,
-};
-
-// Permission helpers
-const isAdmin = (member) => member.permissions.has(PermissionFlagsBits.Administrator);
-
-const hasAnyTutorRole = (m) =>
-  m.roles.cache.has(config.roles.tuteurN1) ||
-  m.roles.cache.has(config.roles.tuteurN1A) ||
-  m.roles.cache.has(config.roles.tuteurN2);
-
-const tutorSnapshot = (m) => {
-  if (config.roles.tuteurN2 && m.roles.cache.has(config.roles.tuteurN2)) return 'N2';
-  if (config.roles.tuteurN1A && m.roles.cache.has(config.roles.tuteurN1A)) return 'N1A';
-  if (config.roles.tuteurN1 && m.roles.cache.has(config.roles.tuteurN1)) return 'N1';
-  return 'unknown';
-};
+const isAdmin = member => member.permissions.has(PermissionFlagsBits.Administrator);
 
 const parseDateInput = (value, endOfDay = false) => {
   if (!value) return null;
@@ -93,6 +52,7 @@ const shiftCommands = [
         .setDescription('Assigner un tuteur (admins)')
         .addStringOption(o => o.setName('shift_id').setDescription('ID du contrat').setRequired(true))
         .addUserOption(o => o.setName('user').setDescription('Tuteur à assigner').setRequired(true))
+        .addStringOption(o => o.setName('reason').setDescription('Motif si autre candidat que le premier').setRequired(false))
     )
     .addSubcommand(sc =>
       sc
@@ -155,7 +115,7 @@ const shiftCommands = [
 /**
  * Handle /shift command
  */
-async function handleShiftChatCommand(interaction) {
+async function handleShiftCommand(interaction) {
   if (!interaction.isChatInputCommand() || interaction.commandName !== 'shift') {
     return false;
   }
@@ -173,75 +133,17 @@ async function handleShiftChatCommand(interaction) {
 
   // /shift post
   if (sub === 'post') {
-    // Defer reply for long operation
     await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
-    const title = interaction.options.getString('title');
-    const startDate = interaction.options.getString('start_date');
-    const durationHours = interaction.options.getNumber('duration_hours');
-    const availabilities = interaction.options.getString('availabilities');
-    const description = interaction.options.getString('description');
-    const subjects = (interaction.options.getString('subjects') || '')
-      .split(',')
-      .map(s => s.trim())
-      .filter(Boolean);
-    const shiftId = interaction.options.getString('shift_id') || randomUUID();
-
-    // Post in #appliquer-à-un-contrat
-    const channel = await interaction.guild.channels.fetch(config.channels.contrats);
-    
-    const embed = new EmbedBuilder()
-      .setColor('#2ECC71')
-      .setTitle(`📣 ${title}`)
-      .setDescription(description)
-      .addFields(
-        { name: '📅 Date de début', value: startDate, inline: true },
-        { name: '⏱️ Durée', value: `${durationHours}h/semaine`, inline: true },
-        { name: '📚 Matières', value: subjects.length ? subjects.join(', ') : '—', inline: true },
-        { name: '🗓️ Disponibilités élève', value: availabilities, inline: false }
-      )
-      .setFooter({ text: `ID: ${shiftId} • Statut: Ouvert` })
-      .setTimestamp();
-
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId(BTN.APPLY(shiftId))
-        .setStyle(ButtonStyle.Primary)
-        .setLabel('✅ Postuler'),
-      new ButtonBuilder()
-        .setCustomId(BTN.WD(shiftId))
-        .setStyle(ButtonStyle.Secondary)
-        .setLabel('↩️ Retirer')
-    );
-
-    const msg = await channel.send({ embeds: [embed], components: [row] });
-
-    console.log('📝 Attempting to save shift to Firestore...');
-    console.log('Guild ID:', interaction.guildId);
-    console.log('Shift ID:', shiftId);
-    
-    try {
-      await createShift(interaction.guildId, {
-        shiftId,
-        guildId: interaction.guildId,
-        channelId: channel.id,
-        messageId: msg.id,
-        title,
-        description,
-        startDate,
-        durationHours,
-        availabilities,
-        subjects,
-        createdBy: interaction.user.id,
-        status: 'open',
-      });
-      console.log('✅ Shift saved to Firestore successfully!');
-    } catch (error) {
-      console.error('❌ Error saving shift to Firestore:', error);
-    }
-
-    await interaction.editReply({
-      content: `✅ Contrat publié : **${title}**\nID: \`${shiftId}\``,
+    const result = await shiftActions.postShift(interaction.guild, interaction.user.id, {
+      title: interaction.options.getString('title'),
+      startDate: interaction.options.getString('start_date'),
+      durationHours: interaction.options.getNumber('duration_hours'),
+      availabilities: interaction.options.getString('availabilities'),
+      description: interaction.options.getString('description'),
+      subjects: (interaction.options.getString('subjects') || '').split(',').map(s => s.trim()).filter(Boolean),
+      ...(interaction.options.getString('shift_id') ? { shiftId: interaction.options.getString('shift_id') } : {}),
     });
+    await interaction.editReply({ content: `✅ Contrat publié : **${result.title}**\nID: \`${result.shiftId}\`` });
     return true;
   }
 
@@ -274,168 +176,26 @@ async function handleShiftChatCommand(interaction) {
   // /shift assign
   if (sub === 'assign') {
     await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
-    
-    const shiftId = interaction.options.getString('shift_id');
-    const user = interaction.options.getUser('user');
-    
-    const shift = await getShift(interaction.guildId, shiftId);
-    
-    if (!shift || shift.status !== 'open') {
-      await interaction.editReply({
-        content: '❌ Ce contrat n\'est pas ouvert ou n\'existe pas.',
-      });
-      return true;
-    }
-
-    await assignShift(interaction.guildId, shiftId, user.id, interaction.user.id);
-
-    // Role updates: N1 → N1A
-    const member = await interaction.guild.members.fetch(user.id);
-    const hasN2 = config.roles.tuteurN2 && member.roles.cache.has(config.roles.tuteurN2);
-    const hasN1 = config.roles.tuteurN1 && member.roles.cache.has(config.roles.tuteurN1);
-    const hasN1A = config.roles.tuteurN1A && member.roles.cache.has(config.roles.tuteurN1A);
-
-    if (hasN2) {
-      // Keep N2, do nothing
-      console.log(`✅ Tuteur ${member.user.tag} est déjà N2, pas de changement de rôle`);
-    } else if (hasN1 && !hasN1A && config.roles.tuteurN1A) {
-      await member.roles.add(config.roles.tuteurN1A, 'Apparié à un contrat');
-      console.log(`✅ Rôle N1A ajouté à ${member.user.tag}`);
-    }
-
-    // Create private thread
-    const ch = await interaction.guild.channels.fetch(shift.channelId);
-    const msg = await ch.messages.fetch(shift.messageId);
-
-    // Mettre à jour visuellement l'offre : assignée
-    if (msg.embeds.length > 0) {
-      const assignedEmbed = EmbedBuilder.from(msg.embeds[0])
-        .setColor('#E74C3C')
-        .setFooter({ text: `ID: ${shiftId} • Statut: Assigné` });
-
-      await msg.edit({
-        embeds: [assignedEmbed],
-      });
-    }
-    
-    let thread;
-
-    if (shift.threadId) {
-      thread = await interaction.guild.channels.fetch(shift.threadId);
-
-      if (thread.archived) {
-        await thread.setArchived(false);
-      }
-
-      await thread.setName(`✅ Assigné • ${member.displayName}`);
-    } else {
-      thread = await ch.threads.create({
-        name: `✅ Assigné • ${member.displayName}`,
-        autoArchiveDuration: 1440,
-        type: ChannelType.PrivateThread,
-        invitable: false,
-        reason: `Assignation du contrat ${shiftId}`,
-      });
-
-      await setShiftThreadId(
-        interaction.guildId,
-        shiftId,
-        thread.id
-      );
-    }
-
-    await thread.members.add(user.id);
-    
-    await thread.send(
-      `🎉 **Contrat assigné à <@${user.id}>**\n\n` +
-      `📋 **${shift.title}**\n` +
-      `📅 Date de début: ${shift.startDate || shift.whenIso || 'N/A'}\n` +
-      `⏱️ Durée: ${shift.durationHours || shift.durationMin}${shift.durationHours ? 'h/semaine' : ' min'}\n` +
-      `🗓️ Disponibilités: ${shift.availabilities || 'Non spécifié'}\n` +
-      `📚 Matières: ${shift.subjects.join(', ')}\n\n` +
-      `Merci de confirmer ta disponibilité !`
-    );
-
-    await interaction.editReply({
-      content: `✅ Contrat assigné à <@${user.id}> avec succès !`,
-    });
+    const result = await shiftActions.assignShift(interaction.guild, interaction.user.id,
+      interaction.options.getString('shift_id'), interaction.options.getUser('user').id,
+      { selectionReason: interaction.options.getString('reason') || undefined });
+    await interaction.editReply({ content: `✅ Contrat assigné à <@${result.userId}>. Fil privé : <#${result.threadId}>` });
     return true;
   }
 
   // /shift unassign
   if (sub === 'unassign') {
-    const shiftId = interaction.options.getString('shift_id');
-
-    const shift = await getShift(interaction.guildId, shiftId);
-
-    if (!shift) {
-      await interaction.reply({
-        content: '❌ Ce contrat n’existe pas.',
-        flags: [MessageFlags.Ephemeral],
-      });
-      return true;
-    }
-
-    const activeAssignments = await listActiveAssignments(
-      interaction.guildId
-    );
-
-    const currentAssignment = activeAssignments.find(
-      assignment => assignment.shiftId === shiftId
-    );
-
-    if (currentAssignment && shift.threadId) {
-      try {
-        const thread = await interaction.guild.channels.fetch(
-          shift.threadId
-        );
-
-        if (thread.archived) {
-          await thread.setArchived(false);
-        }
-
-        await thread.members.remove(currentAssignment.userId);
-      } catch (error) {
-        console.log(
-          `ℹ️ Impossible de retirer le tuteur du thread privé: ${error.message}`
-        );
-      }
-    }
-
-    await unassignShift(interaction.guildId, shiftId);
-
-    // Retrouver la carte originale
-    const ch = await interaction.guild.channels.fetch(shift.channelId);
-    const msg = await ch.messages.fetch(shift.messageId);
-
-    // Remettre visuellement l'offre en mode ouvert
-    if (msg.embeds.length > 0) {
-      const openEmbed = EmbedBuilder.from(msg.embeds[0])
-        .setColor('#2ECC71')
-        .setFooter({ text: `ID: ${shiftId} • Statut: Ouvert` });
-
-      await msg.edit({
-        embeds: [openEmbed],
-      });
-    }
-
-    await interaction.reply({
-      content: `✅ Attribution retirée. Le contrat \`${shiftId}\` est ré-ouvert.`,
-      flags: [MessageFlags.Ephemeral],
-    });
-
+    await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
+    const result = await shiftActions.unassignShift(interaction.guild, interaction.options.getString('shift_id'));
+    await interaction.editReply({ content: `✅ Attribution retirée. Le contrat \`${result.shiftId}\` est réouvert.` });
     return true;
   }
-  
+
   // /shift close
   if (sub === 'close') {
-    const shiftId = interaction.options.getString('shift_id');
-    await setShiftStatus(interaction.guildId, shiftId, 'closed');
-    
-    await interaction.reply({
-      content: `✅ Contrat \`${shiftId}\` fermé aux candidatures.`,
-      flags: [MessageFlags.Ephemeral],
-    });
+    await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
+    const result = await shiftActions.closeShift(interaction.guild, interaction.options.getString('shift_id'));
+    await interaction.editReply({ content: `✅ Contrat \`${result.shiftId}\` fermé aux candidatures.` });
     return true;
   }
 
@@ -582,87 +342,30 @@ async function handleShiftChatCommand(interaction) {
  */
 async function handleShiftButton(interaction) {
   if (!interaction.isButton()) return false;
-
-  const id = interaction.customId;
-  const APPLY_REGEX = /^shift_apply_(.+)$/;
-  const WD_REGEX = /^shift_withdraw_(.+)$/;
-
-  // Apply button
-  if (APPLY_REGEX.test(id)) {
-    const shiftId = id.match(APPLY_REGEX)[1];
-    const shift = await getShift(interaction.guildId, shiftId);
-
-    if (!shift || shift.status !== 'open') {
-      return interaction.reply({
-        content: '❌ Ce contrat n\'est plus ouvert aux candidatures.',
-        flags: [MessageFlags.Ephemeral],
-      });
-    }
-
-    if (!hasAnyTutorRole(interaction.member)) {
-      return interaction.reply({
-        content: '❌ Tu dois être au moins **Tuteur - Niveau 1** pour postuler.',
-        flags: [MessageFlags.Ephemeral],
-      });
-    }
-
-    await applyToShift(
-      interaction.guildId,
-      shiftId,
-      interaction.user.id,
-      tutorSnapshot(interaction.member)
-    );
-
-    return interaction.reply({
-      content: '✅ Ta candidature a été envoyée ! Les admins pourront la consulter.',
-      flags: [MessageFlags.Ephemeral],
-    });
+  const match = /^shift_(apply|withdraw)_(.+)$/.exec(interaction.customId);
+  if (!match) return false;
+  await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
+  try {
+    const { AutomationService } = require('./automation/service');
+    const service = new AutomationService(interaction.client);
+    await service.application(interaction.guild, match[2], interaction.user.id, match[1] === 'withdraw');
+    await interaction.editReply({ content: match[1] === 'apply' ? '✅ Ta candidature a été envoyée !' : '↩️ Ta candidature a été retirée.' });
+  } catch (error) {
+    console.error('Shift button failed:', error.code || error.name);
+    await interaction.editReply({ content: error.status ? `❌ ${error.message}` : '❌ Action interrompue. Contacter le Centre Reed avant de recommencer.' });
   }
+  return true;
+}
 
-  // Withdraw button
-  if (WD_REGEX.test(id)) {
-    const shiftId = id.match(WD_REGEX)[1];
-
-    const shift = await getShift(interaction.guildId, shiftId);
-
-    if (!shift) {
-      return interaction.reply({
-        content: '❌ Ce contrat n’existe plus.',
-        flags: [MessageFlags.Ephemeral],
-      });
-    }
-
-    const activeAssignments = await listMyAssignments(
-      interaction.guildId,
-      interaction.user.id
-    );
-
-    const isAssignedToThisShift = activeAssignments.some(
-      assignment => assignment.shiftId === shiftId
-    );
-
-    if (isAssignedToThisShift) {
-      return interaction.reply({
-        content:
-          '⚠️ Tu es actuellement assigné à ce contrat. ' +
-          'Si tu n’es plus disponible, contacte le Centre Reed afin que le contrat soit réassigné.',
-        flags: [MessageFlags.Ephemeral],
-      });
-    }
-
-    await withdrawFromShift(
-      interaction.guildId,
-      shiftId,
-      interaction.user.id
-    );
-
-    return interaction.reply({
-      content: '↩️ Ta candidature a été retirée.',
-      flags: [MessageFlags.Ephemeral],
-    });
+async function handleShiftChatCommand(interaction) {
+  try { return await handleShiftCommand(interaction); }
+  catch (error) {
+    console.error('Shift command failed:', error.code || error.name);
+    const payload = { content: error.status ? `❌ ${error.message}` : '❌ Action interrompue. Vérifier le mandat avant de recommencer.' };
+    if (interaction.deferred || interaction.replied) await interaction.editReply(payload);
+    else await interaction.reply({ ...payload, flags: [MessageFlags.Ephemeral] });
+    return true;
   }
-
-  return false;
 }
 
 module.exports = {
@@ -670,4 +373,5 @@ module.exports = {
   handleShiftChatCommand,
   handleShiftButton,
 };
+
 
