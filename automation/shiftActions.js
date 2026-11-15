@@ -1,6 +1,6 @@
 'use strict';
 const { randomUUID } = require('node:crypto');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, EmbedBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const config = require('../config');
 const store = require('./store');
 const { fail, reference, shiftInput, text } = require('./validation');
@@ -66,6 +66,11 @@ async function assignShift(guild, actorId, shiftId, userId, options = {}, ctx) {
   reference(shiftId, 'shiftId'); const c = context(ctx);
   const member = await guild.members.fetch({ user: userId, force: true });
   if (!tutorLevel(member)) fail('TUTOR_NOT_ELIGIBLE', 'Le membre doit avoir le niveau N1, N1A ou N2.', 409);
+  if (tutorLevel(member) === 'tuteurN1') {
+    if (!config.roles.tuteurN1A) fail('ROLE_CONFIGURATION', 'ROLE_TUTEUR_N1A doit être configuré avant une première affectation.', 409);
+    const role = await guild.roles.fetch(config.roles.tuteurN1A);
+    if (!role || !role.editable) fail('ROLE_CONFIGURATION', 'Le bot doit pouvoir attribuer le rôle N1A avant une première affectation.', 409);
+  }
   const candidates = await listApplicants(guild.id, shiftId);
   if ((!candidates.length || candidates[0].userId !== userId) && !options.selectionReason) fail('SELECTION_REASON_REQUIRED', 'Indiquer selectionReason pour retenir un autre tuteur que le premier candidat.', 409);
   if (options.selectionReason) text(options.selectionReason, 'selectionReason', 1000);
@@ -75,7 +80,7 @@ async function assignShift(guild, actorId, shiftId, userId, options = {}, ctx) {
     if (!permanent.exists || !permanent.data().threadId || permanent.data().status !== 'ready') fail('STUDENT_POST_REQUIRED', 'Préparer le post permanent de cet élève dans le forum du tuteur avant l’affectation.', 409);
     const space = await store.tutorDoc(guild.id, userId).get();
     const studentThread = await channel(guild, permanent.data().threadId);
-    if (!space.exists || studentThread.parentId !== space.data().forumId || !studentThread.permissionsFor(member)?.has('ViewChannel')) fail('STUDENT_POST_REQUIRED', 'Le post permanent doit être accessible au tuteur dans son forum privé.', 409);
+    if (!space.exists || studentThread.parentId !== space.data().forumId || !studentThread.permissionsFor(member)?.has(PermissionFlagsBits.ViewChannel)) fail('STUDENT_POST_REQUIRED', 'Le post permanent doit être accessible au tuteur dans son forum privé.', 409);
   }
   const old = await store.claimShift(guild.id, shiftId, ['open'], 'assigning', c.operationId);
   try {

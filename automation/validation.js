@@ -62,6 +62,7 @@ function shiftInput(body, patch = false) {
   if (body.subjects !== undefined) out.subjects = list(body.subjects, 'subjects', 10, v => text(v, 'subject', 60));
   else if (!patch) out.subjects = [];
   for (const key of ['shiftId', 'studentReference', 'externalReference']) if (body[key] !== undefined) out[key] = reference(body[key], key);
+  if (out.shiftId && out.shiftId.length > 80) fail('INVALID_REFERENCE', 'shiftId: maximum 80 caractères pour les boutons Discord.');
   if (patch && !Object.keys(out).length) fail('EMPTY_PATCH', 'Aucune modification fournie.');
   return out;
 }

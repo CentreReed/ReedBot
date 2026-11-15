@@ -136,6 +136,8 @@ Les messages neutralisent les mentions par défaut. Les notifications d’affect
 
 `startDate` est une date locale sans heure (début souhaité), `durationHours` est le volume total par semaine. La création réserve l’ID avant de publier sur `CHANNEL_OFFRES` / `CHANNEL_CONTRATS` (canal texte). L’état ne devient `open` qu’après enregistrement du message Discord. Un ID déjà existant n’écrase pas le mandat.
 
+Un nouveau `shiftId` est limité à 80 caractères pour rester sous la limite Discord des IDs des boutons. Les références élève/processus restent limitées à 120 caractères.
+
 Les candidatures conservent l’ordre de dépôt ; un clic répété sur Postuler ne remet pas une candidature active en fin de liste. Une nouvelle candidature après retrait prend une nouvelle date. Les opérations concurrentes sur le mandat sont protégées par transactions et états de transition.
 
 Pour affecter un tuteur, préparer le forum, la carte et le post élève. Si le mandat contient `studentReference`, l’affectation exige un post élève `ready` pour cette référence chez ce tuteur. Un autre candidat que le premier exige `selectionReason` (option `reason` dans `/shift assign`). L’API ne déduit pas la compatibilité des disponibilités : ce choix relève du processus GO.
