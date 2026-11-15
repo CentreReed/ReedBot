@@ -17,7 +17,8 @@ function embed(shift, status) {
   return new EmbedBuilder().setColor(status === 'open' ? '#2ECC71' : '#E74C3C')
     .setTitle(`📣 ${shift.title}`).setDescription(shift.description)
     .addFields({ name: '📅 Date de début', value: shift.startDate, inline: true },
-      { name: '⏱️ Durée', value: `${shift.durationHours}h/semaine`, inline: true },
+      { name: '⏱️ Durée', value: /^Séance découverte\s*:/iu.test(shift.description || '')
+        ? `${shift.durationHours} h (séance découverte)` : `${shift.durationHours}h/semaine`, inline: true },
       { name: '📚 Matières', value: (shift.subjects || []).join(', ') || '—', inline: true },
       { name: '🗓️ Disponibilités élève', value: shift.availabilities })
     .setFooter({ text: `ID: ${shift.shiftId} • Statut: ${status === 'open' ? 'Ouvert' : status === 'assigned' ? 'Assigné' : 'Fermé'}` }).setTimestamp();
