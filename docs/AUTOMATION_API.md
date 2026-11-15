@@ -173,3 +173,14 @@ Un numéro réservé reste consommé si la publication est interrompue ou si un 
 Réponse de création : `data.shiftId`, `data.idFormat`, `data.idDate`, `data.sequenceNumber`, `data.idTimeZone`, ainsi que le message Discord et ses liens. Les intégrations doivent conserver le `shiftId` retourné plutôt que le deviner.
 
 Aucun test ni création de mandat n’a été lancé pour ce changement.
+
+
+## Réservation des numéros sans index de requête
+
+Le compteur AAMMJJNN est réservé dans une transaction Firestore avec le document du mandat. Pour chaque tentative, le bot lit directement le compteur et les 99 identifiants possibles du jour (`01` à `99`) via `Transaction.getAll`. Il prend le maximum du compteur et des documents déjà présents, puis crée le suivant atomiquement. Aucun filtre, tri ou index de requête n’est requis ; un ancien ID à six chiffres n’est pas modifié. Le coût est de 100 lectures de documents par tentative de transaction, auxquelles s’ajoutent les écritures si la réservation aboutit.
+
+Une erreur technique pendant la réservation produit un événement serveur `shift_id_reservation_failed` avec le code, le détail SDK limité, la date et l’operationId, sans corps de requête ni credentials. Ce détail sert au diagnostic dans les logs Render ; la réponse HTTP publique garde son erreur générique.
+
+En cas de `needs_review`, consulter d’abord l’opération via `GET /v1/guilds/{guildId}/operations/{operationId}`. Un HTTP 502 et un code interne 9 ne suffisent pas à conclure qu’un index est la cause : le code indique une précondition non satisfaite. Ne pas relancer automatiquement ni effacer une opération ayant une étape/effet de publication ou un message Discord. Ce correctif ne réarme et ne supprime aucune opération existante.
+
+Références : [Transaction.getAll](https://googleapis.dev/nodejs/firestore/latest/Transaction.html#getAll), [codes d’erreur Firestore](https://docs.cloud.google.com/firestore/native/docs/use-rest-api#error_codes), [index Firestore](https://firebase.google.com/docs/firestore/query-data/index-overview).
