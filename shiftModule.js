@@ -37,7 +37,6 @@ const shiftCommands = [
         .addStringOption(o => o.setName('availabilities').setDescription('Dispos élève (ex: Lun 18-22h, Mar 18-22h)').setRequired(true))
         .addStringOption(o => o.setName('description').setDescription('Description détaillée').setRequired(true))
         .addStringOption(o => o.setName('subjects').setDescription('Matières (séparées par virgule)').setRequired(false))
-        .addStringOption(o => o.setName('shift_id').setDescription('ID personnalisé (optionnel)').setRequired(false))
     )
     .addSubcommand(sc =>
       sc
@@ -141,7 +140,6 @@ async function handleShiftCommand(interaction) {
       availabilities: interaction.options.getString('availabilities'),
       description: interaction.options.getString('description'),
       subjects: (interaction.options.getString('subjects') || '').split(',').map(s => s.trim()).filter(Boolean),
-      ...(interaction.options.getString('shift_id') ? { shiftId: interaction.options.getString('shift_id') } : {}),
     });
     await interaction.editReply({ content: `✅ Contrat publié : **${result.title}**\nID: \`${result.shiftId}\`` });
     return true;
@@ -373,5 +371,6 @@ module.exports = {
   handleShiftChatCommand,
   handleShiftButton,
 };
+
 
 

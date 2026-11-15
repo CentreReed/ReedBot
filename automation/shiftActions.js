@@ -3,6 +3,7 @@ const { randomUUID } = require('node:crypto');
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ChannelType, EmbedBuilder } = require('discord.js');
 const config = require('../config');
 const store = require('./store');
+const { createDailyShift } = require('./shiftIds');
 const { fail, reference, shiftInput, text } = require('./validation');
 const { listApplicants } = require('../shiftStore');
 const tutorLevel = member => ['tuteurN2', 'tuteurN1A', 'tuteurN1'].find(key => config.roles[key] && member.roles.cache.has(config.roles[key])) || null;
@@ -35,13 +36,9 @@ async function postShift(guild, actorId, body, ctx) {
   const input = shiftInput(body); const c = context(ctx);
   const target = await channel(guild, config.channels.contrats);
   if (target.type !== ChannelType.GuildText) fail('OFFERS_CHANNEL_TYPE', 'CHANNEL_OFFRES doit être un canal texte de guilde.', 409);
-  const shiftId = input.shiftId || randomUUID();
-  const shift = { ...input, shiftId, guildId: guild.id, channelId: target.id, messageId: null,
-    createdBy: actorId, createdAt: Date.now(), status: 'publishing', operationId: c.operationId };
-  await store.shiftDoc(guild.id, shiftId).create(shift).catch(error => {
-    if (error.code === 6 || error.code === 'already-exists') fail('SHIFT_EXISTS', 'Cet identifiant de mandat existe déjà.', 409);
-    throw error;
-  });
+  const shift = await createDailyShift(guild.id, { ...input, guildId: guild.id, channelId: target.id, messageId: null,
+    createdBy: actorId, status: 'publishing', operationId: c.operationId });
+  const shiftId = shift.shiftId;
   try {
     const sent = await c.step('publishOffer', async () => {
       const message = await target.send({ embeds: [embed(shift, 'open')], components: buttons(shiftId, false), allowedMentions: { parse: [] } });
@@ -155,3 +152,4 @@ async function reopenShift(guild, shiftId, ctx) {
   } catch (error) { await store.reviewShift(guild.id, shiftId, c.operationId); throw error; }
 }
 module.exports = { postShift, editShift, assignShift, unassignShift, closeShift, reopenShift, channel, tutorLevel };
+

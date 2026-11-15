@@ -36,7 +36,7 @@ Les réponses sont synchrones, avec le statut HTTP `200` en cas de succès :
 
 ```json
 {
-  "data": {"shiftId":"OP001-INSTANCE","status":"open","messageId":"DISCORD_ID"},
+  "data": {"shiftId":"26111501","status":"open","messageId":"DISCORD_ID"},
   "operationId":"HASH_DE_L_OPERATION",
   "replayed":false,
   "requestId":"UUID"
@@ -122,7 +122,7 @@ Les messages neutralisent les mentions par défaut. Les notifications d’affect
 
 ```json
 {
-  "shiftId":"OP001-INSTANCE",
+  "idFormat":"AAMMJJNN",
   "title":"Secondaire 2 — Mathématiques",
   "startDate":"2026-12-01",
   "durationHours":1.5,
@@ -134,7 +134,7 @@ Les messages neutralisent les mentions par défaut. Les notifications d’affect
 }
 ```
 
-`startDate` est une date locale sans heure (début souhaité), `durationHours` est le volume total par semaine. La création réserve l’ID avant de publier sur `CHANNEL_OFFRES` / `CHANNEL_CONTRATS` (canal texte). L’état ne devient `open` qu’après enregistrement du message Discord. Un ID déjà existant n’écrase pas le mandat.
+`startDate` est une date locale sans heure (début souhaité), `durationHours` est le volume total par semaine. La création réserve l’ID avant de publier sur `CHANNEL_OFFRES` / `CHANNEL_CONTRATS` (canal texte). L’état ne devient `open` qu’après enregistrement du message Discord. L’identifiant est attribué automatiquement au moment de la réservation ; aucun ID ne doit être fourni par le client.
 
 Les candidatures conservent l’ordre de dépôt ; un clic répété sur Postuler ne remet pas une candidature active en fin de liste. Une nouvelle candidature après retrait prend une nouvelle date. Les opérations concurrentes sur le mandat sont protégées par transactions et états de transition.
 
@@ -155,3 +155,21 @@ Le gabarit OP-009 n’était pas joint : la structure des contenus permanents re
 - Les anciens mandats suivent le même format de référence que les nouveaux (`A-Z`, chiffres, `_.:-`, maximum 120 caractères). Si un ancien ID personnalisé utilise d’autres caractères, le migrer explicitement plutôt que le deviner.
 
 Sources de déploiement : [Render Web Services](https://render.com/docs/web-services), [Discord Channels](https://docs.discord.com/developers/resources/channel).
+
+
+
+## Numérotation quotidienne des mandats
+
+La création utilise désormais **AAMMJJNN** : `26111501`, `26111502`, etc., pour le 15 novembre 2026. Le jour est calculé dans le fuseau `America/Toronto` au moment de la réservation, indépendamment de `startDate` (début souhaité des séances).
+
+`NN` va de `01` à `99` et repart à `01` le lendemain. Au-delà de 99 réservations dans la journée, la création échoue explicitement avec `DAILY_SHIFT_LIMIT`.
+
+Le bot lit le compteur de la guilde et les IDs existants de huit chiffres correspondant au jour, puis réserve le suivant **dans la même transaction Firestore que la création du document du mandat**. Deux créations simultanées obtiennent deux numéros distincts. Le compteur persiste dans `guilds/{guildId}/automationCounters/shifts-AAAA-MM-JJ`. Les anciens IDs aléatoires à six chiffres restent utilisables pour consulter/assigner les mandats existants et ne sont pas renumérotés.
+
+Un numéro réservé reste consommé si la publication est interrompue ou si un ancien mandat est supprimé. Des trous sont possibles ; aucun numéro potentiellement déjà publié n’est réutilisé. Les lectures du compteur ne publient aucun message et aucune action Discord n’est exécutée dans le callback de transaction.
+
+`/shift post` ne propose plus le champ `shift_id`. Les autres commandes (`applicants`, `assign`, etc.) continuent de demander l’ID du mandat déjà créé. L’API `POST /shifts` rejette un champ `shiftId` fourni par l’appelant. Le champ facultatif `idFormat: "AAMMJJNN"` permet à une automatisation de refuser un ancien serveur qui ne prend pas encore en charge cette numérotation. La clé d’idempotence reste obligatoire et indépendante du numéro : rejouer une création réussie restitue le même résultat sans consommer un numéro.
+
+Réponse de création : `data.shiftId`, `data.idFormat`, `data.idDate`, `data.sequenceNumber`, `data.idTimeZone`, ainsi que le message Discord et ses liens. Les intégrations doivent conserver le `shiftId` retourné plutôt que le deviner.
+
+Aucun test ni création de mandat n’a été lancé pour ce changement.
