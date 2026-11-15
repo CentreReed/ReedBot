@@ -132,8 +132,13 @@ async function unassignShift(guild, shiftId, ctx) {
     return { shiftId, status: 'open' };
   } catch (error) { await store.reviewShift(guild.id, shiftId, c.operationId); throw error; }
 }
-async function closeShift(guild, shiftId, ctx) {
-  const c = context(ctx); const old = await store.claimShift(guild.id, shiftId, ['open', 'assigned'], 'closing', c.operationId);
+async function closeShift(guild, shiftId, ctx, expectedStatus) {
+  if (expectedStatus !== undefined && expectedStatus !== 'open') fail('INVALID_INPUT', 'expectedStatus doit être open si fourni.');
+  const c = context(ctx);
+  // The state check belongs in the claim transaction: a prior GET can race
+  // with an assignment made by staff before the automated close request.
+  const states = expectedStatus === 'open' ? ['open'] : ['open', 'assigned'];
+  const old = await store.claimShift(guild.id, shiftId, states, 'closing', c.operationId);
   try {
     const msg = await offerMessage(guild, old);
     await c.step('closeOffer', async () => { await msg.edit({ embeds: [embed(old, 'closed')], components: buttons(shiftId, true), allowedMentions: { parse: [] } }); return { messageId: msg.id }; });
