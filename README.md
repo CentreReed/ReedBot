@@ -455,3 +455,11 @@ Autrement dit, il transforme Discord en véritable interface opérationnelle pou
 
 Projet interne Centre Reed.
 Usage interne uniquement.
+
+
+## API pour les automatisations n8n
+
+Une API métier optionnelle permet de piloter les mandats, candidatures, affectations, espaces tuteurs, posts élèves, forums, messages, fils et le suivi d’onboarding. Elle reste désactivée par défaut. Voir [le contrat des endpoints et la migration Render](docs/AUTOMATION_API.md) et [.env.automation.example](.env.automation.example).
+
+Le Background Worker Render doit être basculé vers un Web Service unique pour obtenir une URL HTTP. Aucun test ni appel en production n’a été effectué pour cet ajout ; les essais restent à réaliser après revue.
+

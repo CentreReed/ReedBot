@@ -644,4 +644,11 @@ client.on('messageCreate', async (message) => {
   await handleLegacyAdminMessage(message);
 });
 
+// Disabled by default: the existing Render worker keeps its current behavior.
+require('./automation/server').startAutomationApi({ client, hooks: {
+  sendStep,
+  resetQuiz: userId => activeQuizzes.delete(userId),
+} });
+
 client.login(config.token);
+
