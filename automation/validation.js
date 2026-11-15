@@ -43,10 +43,14 @@ function fields(body, allowed, required = []) {
   return body;
 }
 function shiftInput(body, patch = false) {
-  const names = ['shiftId', 'title', 'startDate', 'durationHours', 'availabilities', 'description', 'subjects', 'studentReference', 'externalReference'];
-  fields(body, patch ? names.filter(n => !['shiftId', 'studentReference'].includes(n)) : names,
+  const names = ['idFormat', 'title', 'startDate', 'durationHours', 'availabilities', 'description', 'subjects', 'studentReference', 'externalReference'];
+  fields(body, patch ? names.filter(n => !['idFormat', 'studentReference'].includes(n)) : names,
     patch ? [] : ['title', 'startDate', 'durationHours', 'availabilities', 'description']);
   const out = {};
+  if (!patch) {
+    if (body.idFormat !== undefined && body.idFormat !== 'AAMMJJNN') fail('INVALID_ID_FORMAT', 'Le format automatique est AAMMJJNN.');
+    out.idFormat = 'AAMMJJNN';
+  }
   for (const [key, max] of [['title', 200], ['availabilities', 1000], ['description', 2000]]) {
     if (body[key] !== undefined) out[key] = text(body[key], key, max);
   }
@@ -61,8 +65,9 @@ function shiftInput(body, patch = false) {
   }
   if (body.subjects !== undefined) out.subjects = list(body.subjects, 'subjects', 10, v => text(v, 'subject', 60));
   else if (!patch) out.subjects = [];
-  for (const key of ['shiftId', 'studentReference', 'externalReference']) if (body[key] !== undefined) out[key] = reference(body[key], key);
+  for (const key of ['studentReference', 'externalReference']) if (body[key] !== undefined) out[key] = reference(body[key], key);
   if (patch && !Object.keys(out).length) fail('EMPTY_PATCH', 'Aucune modification fournie.');
   return out;
 }
 module.exports = { ApiError, fail, text, id, reference, integer, bool, list, fields, shiftInput };
+
