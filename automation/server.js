@@ -47,7 +47,10 @@ function startAutomationApi({ client, hooks = {} }) {
     fields(b, ['tutorUserId', 'selectionReason'], ['tutorUserId']); id(b.tutorUserId, 'tutorUserId'); if (b.selectionReason !== undefined) text(b.selectionReason, 'selectionReason', 1000);
   });
   route('POST', base + '/shifts/:shiftId/unassign', 'mandates:write', c => shifts.unassignShift(c.guild, c.params.shiftId, c), empty);
-  route('POST', base + '/shifts/:shiftId/close', 'mandates:write', c => shifts.closeShift(c.guild, c.params.shiftId, c), empty);
+  route('POST', base + '/shifts/:shiftId/close', 'mandates:write', c => shifts.closeShift(c.guild, c.params.shiftId, c, c.body.expectedStatus), b => {
+    fields(b, ['expectedStatus']);
+    if (b.expectedStatus !== undefined && b.expectedStatus !== 'open') fail('INVALID_INPUT', 'expectedStatus doit être open si fourni.');
+  });
   route('POST', base + '/shifts/:shiftId/reopen', 'mandates:write', c => shifts.reopenShift(c.guild, c.params.shiftId, c), empty);
   route('PUT', base + '/shifts/:shiftId/applicants/:userId', 'applications:write', c => service.application(c.guild, c.params.shiftId, c.params.userId, false), empty);
   route('DELETE', base + '/shifts/:shiftId/applicants/:userId', 'applications:write', c => service.application(c.guild, c.params.shiftId, c.params.userId, true), empty);
