@@ -68,6 +68,7 @@ async function assignShift(guild, actorId, shiftId, userId, options = {}, ctx) {
   if ((!candidates.length || candidates[0].userId !== userId) && !options.selectionReason) fail('SELECTION_REASON_REQUIRED', 'Indiquer selectionReason pour retenir un autre tuteur que le premier candidat.', 409);
   if (options.selectionReason) text(options.selectionReason, 'selectionReason', 1000);
   const current = await store.getShift(guild.id, shiftId);
+  await require('./discovery').prepareAssignment(guild, current, userId, c);
   if (current.studentReference) {
     const permanent = await store.tutorDoc(guild.id, userId).collection('students').doc(store.hash(current.studentReference)).get();
     if (!permanent.exists || !permanent.data().threadId || permanent.data().status !== 'ready') fail('STUDENT_POST_REQUIRED', 'Préparer le post permanent de cet élève dans le forum du tuteur avant l’affectation.', 409);
@@ -101,8 +102,11 @@ async function assignShift(guild, actorId, shiftId, userId, options = {}, ctx) {
       return { messageId: sent.id };
     });
     const batch = store.db.batch();
+    const assignedAt = Date.now();
     batch.set(store.guildDoc(guild.id).collection('assignments').doc(shiftId), {
-      shiftId, userId, assignedBy: actorId, assignedAt: Date.now(), active: true, selectionReason: options.selectionReason || '', operationId: c.operationId });
+      shiftId, userId, assignedBy: actorId, assignedAt, active: true, selectionReason: options.selectionReason || '', operationId: c.operationId });
+    const discovery = require('./discovery').initialJob(guild.id, old, userId, assignedAt);
+    if (discovery) batch.create(store.guildDoc(guild.id).collection('discoveryJobs').doc(discovery.jobId), discovery);
     batch.update(store.shiftDoc(guild.id, shiftId), { status: 'assigned', threadId: threadInfo.threadId, updatedAt: Date.now() });
     await batch.commit();
     return { shiftId, userId, status: 'assigned', ...threadInfo, n2BeforeFirstSession: tutorLevel(member) === 'tuteurN2' };
@@ -158,4 +162,5 @@ async function reopenShift(guild, shiftId, ctx) {
   } catch (error) { await store.reviewShift(guild.id, shiftId, c.operationId); throw error; }
 }
 module.exports = { postShift, editShift, assignShift, unassignShift, closeShift, reopenShift, channel, tutorLevel };
+
 

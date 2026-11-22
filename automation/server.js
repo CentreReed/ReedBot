@@ -19,6 +19,7 @@ function startAutomationApi({ client, hooks = {} }) {
   const store = require('./store');
   const shifts = require('./shiftActions');
   const service = new AutomationService(client, hooks);
+  const discovery = require('./discovery');
   const routes = [];
   function route(method, path, scope, handler, validate = () => {}) {
     const keys = [];
@@ -27,6 +28,14 @@ function startAutomationApi({ client, hooks = {} }) {
   }
   const base = '/v1/guilds/:guildId';
   const empty = b => fields(b, []);
+  route('GET', base + '/discovery/jobs', 'read', c => discovery.list(c.guild, c.query));
+  route('GET', base + '/discovery/jobs/:jobId', 'read', c => discovery.getJob(c.guild, c.params.jobId));
+  route('POST', base + '/discovery/jobs/:jobId/claim', 'discovery:write', c => discovery.claim(c.guild, c.params.jobId, c.body));
+  route('POST', base + '/discovery/jobs/:jobId/workspace', 'discovery:write', c => discovery.workspace(service, c.guild, c.params.jobId, c.body, c));
+  route('POST', base + '/discovery/jobs/:jobId/student', 'discovery:write', c => discovery.student(service, c.guild, c.params.jobId, c.body, c));
+  route('POST', base + '/discovery/jobs/:jobId/remind', 'discovery:write', c => discovery.remind(c.guild, c.params.jobId, c.body, c));
+  route('POST', base + '/discovery/jobs/:jobId/effects/:effect', 'discovery:write', c => discovery.effect(c.guild, c.params.jobId, c.params.effect, c.body));
+  route('POST', base + '/discovery/jobs/:jobId/complete', 'discovery:write', c => discovery.complete(c.guild, c.params.jobId, c.body, c));
   route('GET', '/v1/status', 'read', async () => ({ ready: client.isReady(), firestoreConfigured: firebaseInitialized }));
   route('GET', base + '/operations/:operationId', 'read', c => store.getOperation(c.params.operationId, c.guild.id));
   route('GET', base + '/channels', 'read', c => service.listChannels(c.guild));
@@ -162,3 +171,4 @@ function startAutomationApi({ client, hooks = {} }) {
   return server;
 }
 module.exports = { startAutomationApi };
+

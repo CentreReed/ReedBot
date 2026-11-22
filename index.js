@@ -56,6 +56,10 @@ client.once('clientReady', async () => {
 
 // Handle slash commands
 client.on('interactionCreate', async (interaction) => {
+  if (interaction.customId?.startsWith('discovery:')) {
+    await require('./automation/discovery').handleInteraction(interaction);
+    return;
+  }
   if (!interaction.isChatInputCommand()) return;
 
   // Ignore expired interactions
@@ -651,4 +655,5 @@ require('./automation/server').startAutomationApi({ client, hooks: {
 } });
 
 client.login(config.token);
+
 
